@@ -13,6 +13,9 @@
 
 #include "machine/io_port.h"
 #include "machine/key.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 class Keyboard_Controller
  {

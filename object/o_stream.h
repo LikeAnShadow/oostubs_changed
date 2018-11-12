@@ -21,37 +21,63 @@
 
 #include "object/strbuf.h"
 
+// Verschiedene Manipulator optionen
+typedef enum {
+    BIN,
+    OCT,
+    DEC,
+    HEX
+} manipulator;
+
+
 class O_Stream : public Stringbuffer
  {
 private:
     O_Stream(const O_Stream &copy); // Verhindere Kopieren
 
+    // Manipulatoren speichern
+    manipulator man;
+
+    // caste short,int,long in das binaere format
+    void castBin(short number);
+    void castBin(int number);
+    void castBin(long number);
+    // caste zu hexadecimal
+    void castHex(char value, char *result);
+    void castHex(char* ptr, char size);
+    // caste zu char
+    void castValue(long long value, unsigned int base=10, bool isUnsigned=false);
+    void printStringInReverse(char* string, char *act);
+
 public:
+     O_Stream();
 
      // Anfügen von einzelnen chars
-    O_Stream&operator<< (unsigned char c);
-    O_Stream&operator<< (char c);
+     O_Stream&operator<< (unsigned char c);
+     O_Stream&operator<< (char c);
 
 
-    // Anfügen von number
-    O_Stream&operator<< (unsigned short number);
-    O_Stream&operator<< (short number);
-    O_Stream&operator<< (unsigned int number);
-    O_Stream&operator<< (int number);
-    O_Stream&operator<< (unsigned long number);
-    O_Stream&operator<< (long number);
+     // Anfügen von number
+     O_Stream&operator<< (unsigned short number);
+     O_Stream&operator<< (short number);
+     O_Stream&operator<< (unsigned int number);
+     O_Stream&operator<< (int number);
+     O_Stream&operator<< (unsigned long number);
+     O_Stream&operator<< (long number);
 
 
-    // Anfügen von pointern
-    O_Stream&operator<<(void* pointer);
+     // Anfügen von pointern
+     O_Stream&operator<<(void* pointer);
 
 
-    // Anfügen von Wörtern
-    O_Stream&operator<<(char* text);
+     // Anfügen von Wörtern
+     O_Stream&operator<<(char* text);
 
 
-    // Aufruf der Manipulatorfunktion
-    O_Stream&operator<<(O_Stream& (*fkt) (O_Stream&));
+     // Aufruf der Manipulatorfunktion
+     O_Stream&operator<<(O_Stream& (*fkt) (O_Stream&));
+
+     void setManipulator(manipulator man);
  };
 
 /*---------------------------------------------------------------------------*/

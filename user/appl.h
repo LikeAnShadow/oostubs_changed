@@ -11,6 +11,9 @@
 #ifndef __application_include__
 #define __application_include__
 
+#include "device/cgastr.h"
+#include "machine/keyctrl.h"
+
 class Application 
  
  {

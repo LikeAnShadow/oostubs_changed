@@ -47,7 +47,7 @@ class CGA_Screen {
 
     void getpos(int &x, int &y);
 
-    void print (char* text, int length, unsigned char attrib);
+    void print (char* text, int length, unsigned char attrib = 0b00000111);
 /* Hier muesst ihr selbst Code vervollstaendigen */ 
  };
 

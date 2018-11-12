@@ -270,12 +270,40 @@ Keyboard_Controller::Keyboard_Controller () :
 
 Key Keyboard_Controller::key_hit ()
  {
-   Key invalid;  // nicht explizit initialisierte Tasten sind ungueltig
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-/* Hier muesst ihr selbst Code vervollstaendigen */          
- 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-   return invalid;
+    Key invalid;  // nicht explizit initialisierte Tasten sind ungueltig
+
+    int ctrl = ctrl_port.inb();
+
+    // Wenn ctrl nicht leer
+    if((ctrl & 0x01) == 0x01){
+        // Hole Wert
+        this -> code = data_port.inb();
+
+        // ungueltige Eingabe
+        if(ctrl & 0x20){
+            return invalid;
+        }
+        if(this->key_decoded()){
+            // richtig
+            return this->gather;
+        }
+        else{
+            // Hole noch ein byte
+            if((ctrl & 0x01) == 0x01){
+                // Setze prefix (befindet sich im vermuteten code
+                this -> prefix = this -> code;
+                // Setze richtigen Code
+                this -> code = this -> data_port.inb();
+
+                // Sollte jetzt aber richtig interpretiert sein
+                if(this -> key_decoded()){
+                    return this-> gather;
+                }
+            }
+        }
+    }
+
+    return invalid;
  }
 
 // REBOOT: Fuehrt einen Neustart des Rechners durch. Ja, beim PC macht
@@ -308,18 +336,57 @@ void Keyboard_Controller::reboot ()
 
 void Keyboard_Controller::set_repeat_rate (int speed, int delay)
  {
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
-/* Hier muesst ihr selbst Code vervollstaendigen */          
-          
+    unsigned char einstellung = 0;
+    einstellung = delay << 5;
+    einstellung += (speed & 0x1F);
+
+    // Warte auf CPU
+    while ((ctrl_port.inb() & 0x02) == 0x02){}
+
+    // 0xf3 heisst set_speed
+    data_port.outb(0xf3);
+
+    // Solange 0x01, ist Befehl set_speed noch nicht angekommen
+    while((ctrl_port.inb() & 0x01) != 0x01){}
+
+    // Bereit einstellung zu schreiben
+    if(ctrl_port.inb() == 0xfa){
+        // Schreibe einstellung
+        data_port.outb(einstellung);
+        // Warte wieder auf okay
+        while((ctrl_port.inb() & 0x01) != 0x01){}
+        // Controller hat ein Problem
+        if(ctrl_port.inb() == 0xfa){
+            kout << "\n ALARM";
+        }
+    }
  }
 
 // SET_LED: setzt oder loescht die angegebene Leuchtdiode
 
 void Keyboard_Controller::set_led (char led, bool on)
  {
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-          
+    // Soll gesetzt werden?
+    if(on){
+        // Verodern um leds zu aktualisieren
+        this -> leds |= led;
+    }
+    else{
+        // Lösche leds druch verunden mit komplement von led
+        this -> leds &= ~led;
+    }
+    // Warte, bis Controller bereit
+    while((ctrl_port.inb() & 0x02) == 0x02){}
+
+    // fuehre set_led aus
+    data_port.outb(0xed);
+
+    while((ctrl_port.inb() & 0x01) == 0x01){}
+
+    if(data_port.inb() ==  0xfa){
+        // schreibe neuen ledstatus
+        data_port.outb(leds);
+        while((ctrl_port.inb() & 0x01) == 0x01){}
+        data_port.inb();
+    }
  }

@@ -5,10 +5,13 @@
 
 #include "user/appl.h"
 
-Application appl;
+CGA_Stream kout;
+
 
 int main()
 {
+    Application appl;
+
     appl.action();
-    return 0;
+    while(1);
 }

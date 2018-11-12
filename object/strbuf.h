@@ -16,19 +16,24 @@
 #ifndef __strbuf_include__
 #define __strbuf_include__
 
+
+// Maximale Buffergroesse
+#define BUF_SIZE 10
+
 class Stringbuffer
 {
 
-private:
-     Stringbuffer(const Stringbuffer &copy); // Verhindere Kopieren
-
-     char* kout;
-
 public:
+    Stringbuffer();
+    Stringbuffer(const Stringbuffer &copy); // Verhindere Kopieren
 
-     void put (char c);
 
-     virtual void flush() = 0;
+    void put (char c);
+
+    virtual void flush() = 0;
+
+    char buf [BUF_SIZE];
+    char act_buf_char = 0;
 };
 
 #endif

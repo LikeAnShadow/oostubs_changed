@@ -23,7 +23,10 @@ class CGA_Stream : public O_Stream, public CGA_Screen
 private:
       CGA_Stream(CGA_Stream &copy); // Verhindere Kopieren
 /* Hier muesst ihr selbst Code vervollstaendigen */
-    void flush();
+
+public:
+     CGA_Stream();
+     void flush();
  };
 
 #endif

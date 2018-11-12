@@ -15,9 +15,29 @@
 
 #include "object/strbuf.h"
 
+Stringbuffer::Stringbuffer(){
+    int i = 0;
+    // Erstelle einen Pointer, der auf das aktuelle Element im Buffer zeigen soll
+    char* pointer = (char*)(this->buf);
+    // Nullueberschreiben, um alte Daten zu löschen
+    for(; i < BUF_SIZE; i++){
+        *(pointer++)=0;
+    }
+}
+
+Stringbuffer::Stringbuffer(const Stringbuffer &copy){
+    int i = 0;
+    // Erstelle einen Pointer, der auf das aktuelle Element im Buffer zeigen soll
+    char* pointer = (char*)(this->buf);
+    char* other_pointer = (char*)copy.buf;
+    // Diesmal nicht Nullueberschreiben, sondern bitweises kopieren
+    for(; i < BUF_SIZE; i++){
+        *(pointer++)= *(other_pointer);
+    }
+}
 
 
-// Hängt c an das Ende des Buffers
+// Haengt c an das Ende des Buffers
 void Stringbuffer::put (char c){
-    *(kout++) = c;
+    buf[act_buf_char++] = c;
 }
