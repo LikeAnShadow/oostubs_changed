@@ -1,3 +1,5 @@
+isofiles/
+.idea/
 build/
 cmake-build-debug/
 dep/
