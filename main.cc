@@ -13,5 +13,4 @@ int main()
     Application appl;
 
     appl.action();
-    while(1);
 }

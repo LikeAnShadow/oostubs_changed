@@ -33,7 +33,7 @@ public:
     virtual void flush() = 0;
 
     char buf [BUF_SIZE];
-    char act_buf_char = 0;
+    char counter = 0;
 };
 
 #endif

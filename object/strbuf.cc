@@ -39,5 +39,6 @@ Stringbuffer::Stringbuffer(const Stringbuffer &copy){
 
 // Haengt c an das Ende des Buffers
 void Stringbuffer::put (char c){
-    buf[act_buf_char++] = c;
+    if(counter == BUF_SIZE) flush();
+    buf[counter++] = c;
 }
