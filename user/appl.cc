@@ -62,34 +62,33 @@ void Application::action () {
      */
     Keyboard_Controller kc;
     Key input;
-    kc.set_repeat_rate(0xFF,0x03);
+    kc.set_repeat_rate(0xAA,0x01);
     kout.flush();
 
     char inbuf[100] = {0};
     unsigned char index = 0;
     char zeichen;
-    int BUFSIZE = 100;
     do{
         do{
             input = kc.key_hit();
         }while(!input.valid());
         zeichen = input.ascii();
-        if(zeichen == '\n'){
-            kout.getpos(x,y);
-            kout.setpos(0,y+1);
-        }
-        else if(zeichen == '\b'){
+        if(zeichen == '\b'){
             kout.getpos(x,y);
             kout.setpos(x-1,y);
             kout.print(" ", 1);
-            kout.setpos(x-2,y);
+            kout.setpos(x-1,y);
+
         }
         else{
+            if(zeichen == '\n'){
+                kout.getpos(x,y);
+                kout.setpos(0,y+1);
+            }
             kout.print(&zeichen, 1);
             inbuf[index++] = zeichen;
         }
-    }while(index < BUFSIZE);
-    kout << inbuf << endl;
+    }while(1);
 
 
 }
