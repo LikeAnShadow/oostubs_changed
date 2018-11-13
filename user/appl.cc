@@ -17,6 +17,7 @@
 extern CGA_Stream kout;
 
 
+
 Application::Application() {}
          
 void Application::action () {
@@ -42,11 +43,16 @@ void Application::action () {
     kout.getpos(x,y);
     kout.setpos(0, y+2);
     kout << "Herzlich Willkommen!\nOOStubSS zu Ihren Diensten..." << endl;
-    kout << "Zuerst ein paar Tests.\nTesten wir mal die Zahlenkonvertierung:\nint 42: " << 42
-    << "\nhex 42: " << hex << 42 << "\nbin 42: " << bin << 42 << "\noct 42: " << oct << 42
-    << "\ndec 42: " << dec << 42 << endl;
-    kout << "int -25500: " << dec << -25500 << oct<< "\noct: " << -25500 << "\nhex: " << hex << -25500
-    << endl;
+    kout << "Zuerst ein paar Tests.\nTesten wir mal die Zahlenkonvertierung:\n"
+            "int 42: " << 42 << "\nhex 42: " << hex << 42 << "\nbin 42: " <<
+            bin << 42 << "\noct 42: " << oct << 42 << "\ndec 42: " << dec << 42
+            << endl;
+    kout << "int -25500: " << dec << -25500 << oct<< "\noct: " << -25500 <<
+    "\nhex: " << hex << -25500 << endl;
+    kout << "Alles richtig gelaufen?\nAls naechstes wird getestet, ob die "
+            "Zeilen nach oben rutschen, wenn mehr als 25 Zeilen geschrieben "
+            "werden. Ausserdem sollte ein Zeilenbruch stattfinden, wenn die "
+            "Zeilen zu lang werden." << endl;
     kout.flush();
 
     /*
@@ -54,13 +60,18 @@ void Application::action () {
      *
      *
      */
-    /*Keyboard_Controller kc;
+    kout << "Keyboard controller wird initialisert" << endl;
+    Keyboard_Controller kc;
+    kout << "Keyboard Controller initialisiert" << endl;
     Key input;
+    kout << "Key initialisiert" << endl;
     kc.set_repeat_rate(0xFF,0x03);
+    kout << "Repeat_rate gesetzt" << endl;
 
     char inbuf[100] = {0};
     unsigned char index = 0;
     char zeichen;
+    int BUFSIZE = 100;
     do{
         do{
             input = kc.key_hit();
@@ -80,8 +91,8 @@ void Application::action () {
             kout.print(&zeichen, 1);
             inbuf[index++] = zeichen;
         }
-    }while(1);
-    kout << inbuf << endl;*/
+    }while(index < BUFSIZE);
+    kout << inbuf << endl;
 
 
 }
