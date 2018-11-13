@@ -277,13 +277,13 @@ Key Keyboard_Controller::key_hit ()
     // Wenn ctrl nicht leer
     if((ctrl & 0x01) == 0x01){
         // Hole Wert
-        this -> code = data_port.inb();
+        code = data_port.inb();
 
         // ungueltige Eingabe
         if(ctrl & 0x20){
             return invalid;
         }
-        if(this->key_decoded()){
+        if(key_decoded()){
             // richtig
             return gather;
         }
@@ -291,12 +291,12 @@ Key Keyboard_Controller::key_hit ()
             // Hole noch ein byte
             if((ctrl & 0x01) == 0x01){
                 // Setze prefix (befindet sich im vermuteten code
-                this -> prefix = this -> code;
+                prefix = code;
                 // Setze richtigen Code
-                this -> code = this -> data_port.inb();
+                code = data_port.inb();
 
                 // Sollte jetzt aber richtig interpretiert sein
-                if(this -> key_decoded()){
+                if(key_decoded()){
                     return gather;
                 }
             }
@@ -366,27 +366,27 @@ void Keyboard_Controller::set_repeat_rate (int speed, int delay)
 
 void Keyboard_Controller::set_led (char led, bool on)
  {
-    // Soll gesetzt werden?
-    if(on){
-        // Verodern um leds zu aktualisieren
-        this -> leds |= led;
-    }
-    else{
-        // Lösche leds druch verunden mit komplement von led
-        this -> leds &= ~led;
-    }
+
+    // Sind leds on? Wenn nicht, dann alle ausschalten
+    leds = on ? leds | led : leds & ~led;
     // Warte, bis Controller bereit
-    while((ctrl_port.inb() & 0x02) == 0x02){}
+    while((ctrl_port.inb() & 0x02) != 0);
 
     // fuehre set_led aus
     data_port.outb(0xed);
 
-    while((ctrl_port.inb() & 0x01) == 0x01){}
+    // Warte auf Zustimmung
+    while((ctrl_port.inb() & 0x01) == 0){}
 
-    if(data_port.inb() ==  0xfa){
-        // schreibe neuen ledstatus
-        data_port.outb(leds);
-        while((ctrl_port.inb() & 0x01) == 0x01){}
-        data_port.inb();
+    // Wenn zustimmung (ACK) gegeben, dann
+    if(data_port.inb() !=  0xfa) {
+        return;
+    }
+    // schreibe neuen ledstatus
+    data_port.outb(leds);
+    // Warte auf Zustimmung
+    while((ctrl_port.inb() & 0x01) == 0){}
+    if(data_port.inb() != 0xfa){
+        return;
     }
  }

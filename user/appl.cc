@@ -60,13 +60,10 @@ void Application::action () {
      *
      *
      */
-    kout << "Keyboard controller wird initialisert" << endl;
     Keyboard_Controller kc;
-    kout << "Keyboard Controller initialisiert" << endl;
     Key input;
-    kout << "Key initialisiert" << endl;
     kc.set_repeat_rate(0xFF,0x03);
-    kout << "Repeat_rate gesetzt" << endl;
+    kout.flush();
 
     char inbuf[100] = {0};
     unsigned char index = 0;
@@ -79,7 +76,7 @@ void Application::action () {
         zeichen = input.ascii();
         if(zeichen == '\n'){
             kout.getpos(x,y);
-            kout.setpos(x,y+1);
+            kout.setpos(0,y+1);
         }
         else if(zeichen == '\b'){
             kout.getpos(x,y);
