@@ -285,7 +285,7 @@ Key Keyboard_Controller::key_hit ()
         }
         if(this->key_decoded()){
             // richtig
-            return this->gather;
+            return gather;
         }
         else{
             // Hole noch ein byte
@@ -297,7 +297,7 @@ Key Keyboard_Controller::key_hit ()
 
                 // Sollte jetzt aber richtig interpretiert sein
                 if(this -> key_decoded()){
-                    return this-> gather;
+                    return gather;
                 }
             }
         }
