@@ -12,6 +12,7 @@
 
 #include "user/appl.h"
 
+#define BUFFERSIZE 128
          
 /* GLOBALE VARIABLEN */
 extern CGA_Stream kout;
@@ -38,6 +39,7 @@ void Application::action () {
      *
      *
      */
+
     int x,y;
 
     kout.getpos(x,y);
@@ -47,8 +49,6 @@ void Application::action () {
             "int 42: " << 42 << "\nhex 42: " << hex << 42 << "\nbin 42: " <<
             bin << 42 << "\noct 42: " << oct << 42 << "\ndec 42: " << dec << 42
             << endl;
-    kout << "int -25500: " << dec << -25500 << oct<< "\noct: " << -25500 <<
-    "\nhex: " << hex << -25500 << endl;
     kout << "Alles richtig gelaufen?\nAls naechstes wird getestet, ob die "
             "Zeilen nach oben rutschen, wenn mehr als 25 Zeilen geschrieben "
             "werden. Ausserdem sollte ein Zeilenbruch stattfinden, wenn die "
@@ -65,30 +65,54 @@ void Application::action () {
     kc.set_repeat_rate(0xAA,0x01);
     kout.flush();
 
-    char inbuf[100] = {0};
+    char inbuf[128] = {0};
     unsigned char index = 0;
     char zeichen;
     do{
+        index = 0;
         do{
-            input = kc.key_hit();
-        }while(!input.valid());
-        zeichen = input.ascii();
-        if(zeichen == '\b'){
-            kout.getpos(x,y);
-            kout.setpos(x-1,y);
-            kout.print(" ", 1);
-            kout.setpos(x-1,y);
-
-        }
-        else{
-            if(zeichen == '\n'){
-                kout.getpos(x,y);
-                kout.setpos(0,y+1);
+            do{
+                input = kc.key_hit();
+            }while(!input.valid());
+            zeichen = input.ascii();
+            if(zeichen == '\b'){
+                if(index != 0){
+                    kout.getpos(x,y);
+                    kout.setpos(x-1,y);
+                    kout.print(" ", 1);
+                    kout.setpos(x-1,y);
+                }
             }
-            kout.print(&zeichen, 1);
-            inbuf[index++] = zeichen;
+            else{
+                kout.print(&zeichen, 1);
+
+                if(zeichen == '\n'){
+                    inbuf[index] = 0;
+                    break;
+                }
+                else{
+                    inbuf[index++] = zeichen;
+                    if(index == (BUFFERSIZE-1)){
+                        inbuf[index] = 0;
+                        index = 0;
+                    }
+                }
+            }
+        }while(1);
+        if(reboot((char*)inbuf, index)){
+            kc.reboot();
         }
     }while(1);
+}
 
+bool Application::reboot(char* buf, unsigned int length){
+    unsigned int length2 = 6;
+    char* code = "reboot";
 
+    if(length2 != length) return false;
+
+    for(int i = 0; i < length; i++){
+        if(*(code++) != *(buf++)) return false;
+    }
+    return true;
 }

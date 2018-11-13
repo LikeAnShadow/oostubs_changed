@@ -20,6 +20,8 @@ class Application
 private:
     Application (const Application &copy); // Verhindere Kopieren
 
+    bool reboot(char* buf, unsigned int length);
+
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
     Application();
