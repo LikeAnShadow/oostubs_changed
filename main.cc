@@ -1,16 +1,22 @@
-/* $Id: main.cc 8485 2017-03-27 11:50:06Z friesel $ */
-
-/* Hier muesst ihr selbst Code vervollstaendigen */
+/**********************************************************************************************************************/
+/* Author:      P. Luettmann, J. Telljohann                                                                           */
+/* Version:     2.0                                                                                                   */
+/* License:     none                                                                                                  */
+/**********************************************************************************************************************/
 
 
 #include "user/appl.h"
 
-CGA_Stream kout;
+
+CGA_Stream kout;            // Ausgabeobjekt
+Application appl;           // Testanwendung
 
 
 int main()
 {
-    Application appl;
-
+    // "Mopsgeschwindigkeit!"
     appl.action();
+
+    // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
+    while(1);
 }

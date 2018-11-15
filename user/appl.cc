@@ -49,11 +49,18 @@ void Application::action () {
             "int 42: " << 42 << "\nhex 42: " << hex << 42 << "\nbin 42: " <<
             bin << 42 << "\noct 42: " << oct << 42 << "\ndec 42: " << dec << 42
             << endl;
+    kout << "Weitere Tests.\nTesten wir mal die Zahlenkonvertierung negativer Zahlen:\n"
+            "int -42: " << -42 << "\nhex -42: " << hex << -42 << "\nbin -42: " <<
+         bin << -42 << "\noct -42: " << oct << -42 << "\ndec -42: " << dec << -42
+         << endl;
     kout << "Alles richtig gelaufen?\nAls naechstes wird getestet, ob die "
             "Zeilen nach oben rutschen, wenn mehr als 25 Zeilen geschrieben "
             "werden. Ausserdem sollte ein Zeilenbruch stattfinden, wenn die "
             "Zeilen zu lang werden." << endl;
     kout.flush();
+    kout.getpos(x,y);
+    kout.print("oostubs:  ", 10);
+    kout.setpos(x+9,y);
 
     /*
      * Dritter Test
@@ -65,10 +72,10 @@ void Application::action () {
     kc.set_repeat_rate(0xAA,0x01);
     kout.flush();
 
-    char inbuf[128] = {0};
     unsigned char index = 0;
     char zeichen;
     do{
+        char inbuf[128] = {0};
         index = 0;
         do{
             do{
@@ -76,17 +83,21 @@ void Application::action () {
             }while(!input.valid());
             zeichen = input.ascii();
             if(zeichen == '\b'){
-                if(index != 0){
+                if(index > 0){
                     kout.getpos(x,y);
                     kout.setpos(x-1,y);
                     kout.print(" ", 1);
                     kout.setpos(x-1,y);
+                    index--;
                 }
             }
             else{
                 kout.print(&zeichen, 1);
 
                 if(zeichen == '\n'){
+                    kout.print("oostubs:  ", 10);
+                    kout.getpos(x,y);
+                    kout.setpos(x-1,y);
                     inbuf[index] = 0;
                     break;
                 }
@@ -102,6 +113,12 @@ void Application::action () {
         if(reboot((char*)inbuf, index)){
             kc.reboot();
         }
+        if(shutdown((char*)inbuf, index)){
+            kc.shutdown();
+        }
+        if(exit((char*)inbuf, index)){
+            break;
+        }
     }while(1);
 }
 
@@ -111,7 +128,31 @@ bool Application::reboot(char* buf, unsigned int length){
 
     if(length2 != length) return false;
 
-    for(int i = 0; i < length; i++){
+    for(unsigned int i = 0; i < length; i++){
+        if(*(code++) != *(buf++)) return false;
+    }
+    return true;
+}
+
+bool Application::shutdown(char* buf, unsigned int length){
+    unsigned int length2 = 8;
+    char* code = "shutdown";
+
+    if(length2 != length) return false;
+
+    for(unsigned int i = 0; i < length; i++){
+        if(*(code++) != *(buf++)) return false;
+    }
+    return true;
+}
+
+bool Application::exit(char* buf, unsigned int length){
+    unsigned int length2 = 4;
+    char* code = "exit";
+
+    if(length2 != length) return false;
+
+    for(unsigned int i = 0; i < length; i++){
         if(*(code++) != *(buf++)) return false;
     }
     return true;

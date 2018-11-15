@@ -26,8 +26,8 @@ O_Stream::O_Stream(const O_Stream &copy) : Stringbuffer( copy ) {
 
 }
 
-/******************************************************************************
-/* Hier folgen alle << operatoren
+/*****************************************************************************/
+/* Hier folgen alle << operatoren                                            */
 /*                                                                           */
 /*****************************************************************************/
 O_Stream& O_Stream::operator<< (unsigned char c){
@@ -41,7 +41,8 @@ O_Stream& O_Stream::operator<< (char c){
 }
 
 O_Stream& O_Stream::operator<< (unsigned short number) {
-    switch (man) {
+    cast(number, true);
+    /*switch (man) {
         case BIN:
             castBin((short) number);
             break;
@@ -54,12 +55,13 @@ O_Stream& O_Stream::operator<< (unsigned short number) {
         case OCT:
             castValue((long long) number, 8);
             break;
-    }
+    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (short number) {
-    switch (man) {
+    cast(number);
+    /*switch (man) {
         case BIN:
             castBin((short) number);
             break;
@@ -72,12 +74,13 @@ O_Stream& O_Stream::operator<< (short number) {
         case OCT:
             castValue((long long) number, 8);
             break;
-    }
+    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (unsigned int number) {
-    switch (man) {
+    cast(number, true);
+    /*switch (man) {
         case BIN:
             castBin((int) number);
             break;
@@ -90,12 +93,13 @@ O_Stream& O_Stream::operator<< (unsigned int number) {
         case OCT:
             castValue((long long) number, 8, true);
             break;
-    }
+    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (int number) {
-    switch (man) {
+    cast(number);
+    /*switch (man) {
         case BIN:
             castBin((int) number);
             break;
@@ -108,12 +112,13 @@ O_Stream& O_Stream::operator<< (int number) {
         case OCT:
             castValue((long long) number, 8, true);
             break;
-    }
+    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (unsigned long number){
-    switch (man){
+    cast(number, true);
+    /*switch (man){
         case BIN:
             castBin((long) number);
             break;
@@ -126,12 +131,13 @@ O_Stream& O_Stream::operator<< (unsigned long number){
         case OCT:
             castValue((long long) number, 8);
             break;
-    }
+    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (long number){
-    switch (man){
+    cast(number);
+    /*switch (man){
         case BIN:
             castBin((long) number);
             break;
@@ -144,7 +150,7 @@ O_Stream& O_Stream::operator<< (long number){
         case OCT:
             castValue((long long) number, 8);
             break;
-    }
+    }*/
     return *this;
 }
 
@@ -169,77 +175,11 @@ O_Stream& O_Stream::operator<<(O_Stream& (*fkt) (O_Stream&)){
 }
 
 
-/******************************************************************************
-/* Hier folgen alle cast Hilfsfunktionen
+/*****************************************************************************/
+/* Hier folgen alle cast Hilfsfunktionen                                     */
 /*                                                                           */
 /*****************************************************************************/
 
-
-void O_Stream::castBin(short number){
-    unsigned short compare = (1<<15);
-    char x = 0 ;
-    bool is_one = false;
-
-    do
-    {
-        // bitweiser Vergleich
-        x = (number&compare)?'1':'0';
-        compare = compare>>1;
-        if(!is_one)
-        {
-            if(x=='1')
-                is_one=true;
-            else
-                continue;
-        }
-        this->put(x);
-
-    }while(compare>0);
-}
-
-void O_Stream::castBin(int number){
-    unsigned int compare = (1<<(sizeof(int)*8-1));
-    char x = 0 ;
-    bool is_one = false;
-
-    do
-    {
-        // bitweiser Vergleich
-        x = (number&compare)?'1':'0';
-        compare = compare>>1;
-        if(!is_one)
-        {
-            if(x=='1')
-                is_one=true;
-            else
-                continue;
-        }
-        this->put(x);
-
-    }while(compare>0);
-}
-
-void O_Stream::castBin(long number){
-    unsigned long compare = (1<<31);
-    char x = 0 ;
-    bool is_one = false;
-
-    do
-    {
-        // bitweiser Vergleich
-        x = (number&compare)?'1':'0';
-        compare = compare>>1;
-        if(!is_one)
-        {
-            if(x=='1')
-                is_one=true;
-            else
-                continue;
-        }
-        this->put(x);
-
-    }while(compare>0);
-}
 // caste zu hexadecimal
 void O_Stream::castHex(char value, char *result){
     if(!result) return;
@@ -271,28 +211,31 @@ void O_Stream::castHex(char* ptr, char size){
         size--;
     }while(size>0);
 }
-// caste zu char
-void O_Stream::castValue(long long value, unsigned int base, bool isUnsigned){
-    char array[32];
-    char *act = &(array[0]);
-    char *last = &(array[32]);
-    long temp;
 
-    if((!isUnsigned) && (value<0)) {
+void O_Stream::cast(long long value, bool isUnsigned){
+    char array[32];
+    char *ptr = &array[0];
+    char *lst = &array[32];
+
+    if(!isUnsigned && value < 0){
         put('-');
         value *= -1;
     }
 
-    temp = (long long) value;
-    do
-    {
-        *act = (temp%base)+'0';
-        act++;
-        temp = temp/base;
-    }while(temp && act != last);
-
-    // Printe number in der richtigen Reihenfolge
-    printStringInReverse(&(array[0]), act-1);
+    long long temp = value;
+    do{
+        if(man != 16){
+            *(ptr++) = (temp%man)+'0';
+        }else{
+            char x = temp%man;
+            if(x > 9) {
+                x += 7;
+            }
+            *(ptr++) = x + '0';
+        }
+        temp = temp/man;
+    }while (temp && ptr != lst);
+    printStringInReverse(&(array[0]), ptr-1);
 }
 
 void O_Stream::printStringInReverse(char* string, char* act){

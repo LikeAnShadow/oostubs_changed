@@ -325,6 +325,21 @@ void Keyboard_Controller::reboot ()
    ctrl_port.outb (cpu_reset);        // Reset
  }
 
+void Keyboard_Controller::shutdown ()
+{
+    kout.flush();
+    kout << "Shutdown noch nicht moeglich" << endl;
+    kout.flush();
+    /*int status;
+
+    *(unsigned short*) 0x472 = 0x1234;
+
+    do
+    { status = ctrl_port.inb ();
+    } while ((status & inpb) != 0);
+    ctrl_port.outb (cpu_shutdown); */
+}
+
 // SET_REPEAT_RATE: Funktion zum Einstellen der Wiederholungsrate der
 //                  Tastatur. delay bestimmt, wie lange eine Taste ge-
 //                  drueckt werden muss, bevor die Wiederholung einsetzt.
@@ -363,7 +378,6 @@ void Keyboard_Controller::set_repeat_rate (int speed, int delay)
  }
 
 // SET_LED: setzt oder loescht die angegebene Leuchtdiode
-
 void Keyboard_Controller::set_led (char led, bool on)
  {
 

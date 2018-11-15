@@ -39,7 +39,7 @@ private:
      {
 	enum { set_led = 0xed, set_speed = 0xf3 };
      };
-    enum { cpu_reset = 0xfe };
+    enum { cpu_reset = 0xfe, cpu_shutdown = 0xff };
 
     // Namen der LEDs
     struct led
@@ -91,6 +91,8 @@ public:
    // REBOOT: Fuehrt einen Neustart des Rechners durch. Ja, beim PC macht
    //         das der Tastaturcontroller.
    void reboot ();
+
+   void shutdown();
 
    // SET_REPEAT_RATE: Funktion zum Einstellen der Wiederholungsrate der
    //                  Tastatur. delay bestimmt, wie lange eine Taste ge-

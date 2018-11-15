@@ -23,10 +23,10 @@
 
 // Verschiedene Manipulator optionen
 typedef enum {
-    BIN,
-    OCT,
-    DEC,
-    HEX
+    BIN = 2,
+    OCT = 8,
+    DEC = 10,
+    HEX = 16
 } manipulator;
 
 
@@ -38,15 +38,11 @@ private:
     // Manipulatoren speichern
     manipulator man;
 
-    // caste short,int,long in das binaere format
-    void castBin(short number);
-    void castBin(int number);
-    void castBin(long number);
     // caste zu hexadecimal
     void castHex(char value, char *result);
     void castHex(char* ptr, char size);
     // caste zu char
-    void castValue(long long value, unsigned int base=10, bool isUnsigned=false);
+    void cast(long long value, bool isUnsigned = false);
     void printStringInReverse(char* string, char *act);
 
 public:

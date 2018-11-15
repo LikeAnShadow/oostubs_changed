@@ -14,4 +14,44 @@
 /* kann mit Hilfe der Klasse CPU festgelegt werden.                          */
 /*****************************************************************************/
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
+#include "machine/pic.h"
+
+PIC::PIC() : master(0x21), slave(0xa1){}
+
+PIC::PIC(const PIC &copy) :  master(0x21), slave(0xa1){}
+
+void PIC::allow(int interrupt_device){
+   int mask = 0;
+   IO_Port *dev;
+   // ueberpruefe, ob interrupt_device ein masterdevice ist
+   if(interrupt_device <= 7){
+      dev = &master;
+   }else{
+      dev = &slave;
+      interrupt_device -= 8;
+   }
+   // Hole aktuelle maske
+   mask = dev->inb();
+   // berechne neue maske
+   mask &= ~(1<<interrupt_device);
+   // setze neue maske
+   dev->outb(mask);
+}
+
+void PIC::forbid(int interrupt_device){
+   int mask = 0;
+   IO_Port *dev;
+   // ueberpruefe, ob interrupt_device ein masterdevice ist
+   if(interrupt_device <= 7){
+      dev = &master;
+   }else{
+      dev = &slave;
+      interrupt_device -= 8;
+   }
+   // Hole aktuelle maske
+   mask = dev->inb();
+   // berechne neue maske
+   mask |= ~(1<<interrupt_device);
+   // setze neue maske
+   dev->outb(mask);
+}

@@ -21,6 +21,8 @@ private:
     Application (const Application &copy); // Verhindere Kopieren
 
     bool reboot(char* buf, unsigned int length);
+    bool shutdown(char* buf, unsigned int length);
+    bool exit(char* buf, unsigned int length);
 
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
