@@ -13,6 +13,8 @@
 
 #include "device/cgastr.h"
 #include "machine/keyctrl.h"
+#include "device/keyboard.h"
+#include "machine/cpu.h"
 
 class Application 
  
@@ -20,7 +22,6 @@ class Application
 private:
     Application (const Application &copy); // Verhindere Kopieren
 
-    bool reboot(char* buf, unsigned int length);
     bool shutdown(char* buf, unsigned int length);
     bool exit(char* buf, unsigned int length);
 

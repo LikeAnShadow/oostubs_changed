@@ -6,10 +6,12 @@
 
 
 #include "user/appl.h"
+#include "machine/plugbox.h"
 
 
 CGA_Stream kout;            // Ausgabeobjekt
 Application appl;           // Testanwendung
+Plugbox plugbox;            // Plugbox :D
 
 
 int main()

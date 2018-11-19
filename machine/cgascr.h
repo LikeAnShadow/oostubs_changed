@@ -34,6 +34,13 @@ class CGA_Screen {
     CGA_Screen(const CGA_Screen &copy); // Verhindere Kopieren
 
     public:
+    enum{
+        GRAYONBLACK = 0b00000111,
+        BLUEONBLACK = 0b00000001,
+        BLACKONGREEN = 0b0010000,
+        GREENONBLACK = 0b00000010
+    };
+
     CGA_Screen()
 /* Hier muesst ihr selbst Code vervollstaendigen */ 
     {
@@ -47,7 +54,7 @@ class CGA_Screen {
 
     void getpos(int &x, int &y);
 
-    void print (char* text, int length, unsigned char attrib = 0b00000111);
+    void print (char* text, int length, unsigned char attrib = GRAYONBLACK);
 /* Hier muesst ihr selbst Code vervollstaendigen */ 
  };
 

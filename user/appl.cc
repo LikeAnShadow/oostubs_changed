@@ -22,6 +22,9 @@ extern CGA_Stream kout;
 Application::Application() {}
          
 void Application::action () {
+    /*
+     * Tests für Aufgabe 1
+     */
     /*Erster Test
      *
      *
@@ -32,15 +35,12 @@ void Application::action () {
     // Gibt eine seltsame Ausgabe aus
     kout << "Hallo Welt" << endl << "Das funktioniert ja ganz ok" << endl;
     kout.flush();*/
-
-
     /*
      * Zweiter Test
      *
      *
      */
-
-    int x,y;
+    /*int x,y;
 
     kout.getpos(x,y);
     kout.setpos(0, y+2);
@@ -61,13 +61,13 @@ void Application::action () {
     kout.getpos(x,y);
     kout.print("oostubs:  ", 10);
     kout.setpos(x+9,y);
-
+*/
     /*
      * Dritter Test
      *
      *
      */
-    Keyboard_Controller kc;
+    /*Keyboard_Controller kc;
     Key input;
     kc.set_repeat_rate(0xAA,0x01);
     kout.flush();
@@ -119,20 +119,41 @@ void Application::action () {
         if(exit((char*)inbuf, index)){
             break;
         }
-    }while(1);
-}
+    }while(1);*/
+    /*
+     * Tests für Aufgabe 2
+     */
+    Keyboard keyboard;
+    CPU cpu;
+    int i = 0, count = 0;
+    int x,y;
+    char zeichen;
+    int wait = 0;
 
-bool Application::reboot(char* buf, unsigned int length){
-    unsigned int length2 = 6;
-    char* code = "reboot";
+    // Initialisierungen
+    keyboard.plugin();
+    cpu.enable_int(); // lasse interrupts zu
+    while (1){
+       i++;
+       if(i > 0x20000000){
+          i = 0;
+          if(count >= 80) count = 0;
+          kout.getpos(x,y);
+          kout.setpos(79,0);
 
-    if(length2 != length) return false;
+          while(wait++ < 0x200000);
+          wait = 0;
 
-    for(unsigned int i = 0; i < length; i++){
-        if(*(code++) != *(buf++)) return false;
+          zeichen = count%10+'0';
+          kout.print(&zeichen, 1, kout.GREENONBLACK);
+          kout.print(" ", 1);
+          kout.setpos(x,y);
+
+          count++;
+       }
     }
-    return true;
 }
+
 
 bool Application::shutdown(char* buf, unsigned int length){
     unsigned int length2 = 8;
