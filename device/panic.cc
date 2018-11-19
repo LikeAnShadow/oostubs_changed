@@ -7,6 +7,17 @@
 /*---------------------------------------------------------------------------*/
 /* Standard Unterbrechungsbehandlung.                                        */
 /*****************************************************************************/
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
+
+#include "panic.h"
+
+extern CGA_Stream kout;
+
+void Panic::trigger() {
+   // Zuerst die Fehlermeldung
+   kout << "ALARM! Ein wildes Interrupt taucht auf! Was soll ich nur tun?\n";
+   kout << "-> Ich habs! Ich halte die komplette CPU einfach an";
+
+   // Dann CPU anhalten
+   CPU cpu;
+   cpu.halt();
+}

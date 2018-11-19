@@ -14,16 +14,19 @@
 /* INCLUDES */
 
 #include "guard/gate.h"
+#include "device/cgastr.h"
+#include "machine/cpu.h"
 
-class Panic 
+class Panic : public Gate
 /* Hier muesst ihr selbst Code vervollstaendigen */         
  {
 private:
     Panic (const Panic &copy); // Verhindere Kopieren
+
 public:
-    Panic () {}
-/* Hier muesst ihr selbst Code vervollstaendigen */                  
-          
+   Panic () {}
+
+   void trigger();
  };
 
 #endif
