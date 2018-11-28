@@ -16,6 +16,8 @@
          
 /* GLOBALE VARIABLEN */
 extern CGA_Stream kout;
+extern PIC pic;
+extern Plugbox plugbox;
 
 
 
@@ -135,7 +137,9 @@ void Application::action () {
     cpu.enable_int(); // lasse interrupts zu
     while (1){
        i++;
-       if(i > 0x20000000){
+       if(i > 0x2000000){
+          //pic.forbid(PIC::devices::keyboard);
+          cpu.disable_int();
           i = 0;
           if(count >= 80) count = 0;
           kout.getpos(x,y);
@@ -143,13 +147,14 @@ void Application::action () {
 
           while(wait++ < 0x200000);
           wait = 0;
-
           zeichen = count%10+'0';
           kout.print(&zeichen, 1, kout.GREENONBLACK);
           kout.print(" ", 1);
           kout.setpos(x,y);
 
           count++;
+          //pic.allow(PIC::devices::keyboard);
+          cpu.enable_int();
        }
     }
 }

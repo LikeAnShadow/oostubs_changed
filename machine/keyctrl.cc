@@ -13,6 +13,7 @@
 #include "machine/keyctrl.h"
  
 /* STATIC MEMERS */
+extern PIC pic;
 
 unsigned char Keyboard_Controller::normal_tab[] =
 {
@@ -351,56 +352,59 @@ void Keyboard_Controller::shutdown ()
 
 void Keyboard_Controller::set_repeat_rate (int speed, int delay)
  {
-    unsigned char einstellung = 0;
-    einstellung = delay << 5;
-    einstellung += (speed & 0x1F);
+    if(pic.is_masked(PIC::devices::keyboard)) {
+       unsigned char einstellung = 0;
+       einstellung = delay << 5;
+       einstellung += (speed & 0x1F);
 
-    // Warte auf CPU
-    while ((ctrl_port.inb() & 0x02) == 0x02){}
+       // Warte auf CPU
+       while ((ctrl_port.inb() & 0x02) == 0x02) {}
 
-    // 0xf3 heisst set_speed
-    data_port.outb(0xf3);
+       // 0xf3 heisst set_speed
+       data_port.outb(0xf3);
 
-    // Solange 0x01, ist Befehl set_speed noch nicht angekommen
-    while((ctrl_port.inb() & 0x01) != 0x01){}
+       // Solange 0x01, ist Befehl set_speed noch nicht angekommen
+       while ((ctrl_port.inb() & 0x01) != 0x01) {}
 
-    // Bereit einstellung zu schreiben
-    if(ctrl_port.inb() == 0xfa){
-        // Schreibe einstellung
-        data_port.outb(einstellung);
-        // Warte wieder auf okay
-        while((ctrl_port.inb() & 0x01) != 0x01){}
-        // Controller hat ein Problem
-        if(ctrl_port.inb() == 0xfa){
-            kout << "\n ALARM";
-        }
+       // Bereit einstellung zu schreiben
+       if (ctrl_port.inb() == 0xfa) {
+          // Schreibe einstellung
+          data_port.outb(einstellung);
+          // Warte wieder auf okay
+          while ((ctrl_port.inb() & 0x01) != 0x01) {}
+          // Controller hat ein Problem
+          if (ctrl_port.inb() == 0xfa) {
+             kout << "\n ALARM";
+          }
+       }
     }
  }
 
 // SET_LED: setzt oder loescht die angegebene Leuchtdiode
 void Keyboard_Controller::set_led (char led, bool on)
  {
+   if(pic.is_masked(PIC::devices::keyboard)){
+      // Sind leds on? Wenn nicht, dann alle ausschalten
+      leds = on ? leds | led : leds & ~led;
+      // Warte, bis Controller bereit
+      while((ctrl_port.inb() & 0x02) != 0);
 
-    // Sind leds on? Wenn nicht, dann alle ausschalten
-    leds = on ? leds | led : leds & ~led;
-    // Warte, bis Controller bereit
-    while((ctrl_port.inb() & 0x02) != 0);
+      // fuehre set_led aus
+      data_port.outb(0xed);
 
-    // fuehre set_led aus
-    data_port.outb(0xed);
+      // Warte auf Zustimmung
+      while((ctrl_port.inb() & 0x01) == 0){}
 
-    // Warte auf Zustimmung
-    while((ctrl_port.inb() & 0x01) == 0){}
-
-    // Wenn zustimmung (ACK) gegeben, dann
-    if(data_port.inb() !=  0xfa) {
-        return;
-    }
-    // schreibe neuen ledstatus
-    data_port.outb(leds);
-    // Warte auf Zustimmung
-    while((ctrl_port.inb() & 0x01) == 0){}
-    if(data_port.inb() != 0xfa){
-        return;
-    }
+      // Wenn zustimmung (ACK) gegeben, dann
+      if(data_port.inb() !=  0xfa) {
+         return;
+      }
+      // schreibe neuen ledstatus
+      data_port.outb(leds);
+      // Warte auf Zustimmung
+      while((ctrl_port.inb() & 0x01) == 0){}
+      if(data_port.inb() != 0xfa){
+         return;
+      }
+   }
  }

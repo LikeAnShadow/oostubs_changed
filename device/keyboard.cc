@@ -12,15 +12,15 @@
 
 extern Plugbox plugbox;
 extern CGA_Stream kout;
+extern PIC pic;
 
 Keyboard::Keyboard() : Gate(), Keyboard_Controller() {}
 
 void Keyboard::plugin(){
    // Erstelle pic object
-   PIC pic;
 
    plugbox.assign(plugbox.keyboard, *this); // melde keyboard an
-   pic.allow(keyboard); // erlaube unterbrechungen von keyboard
+   pic.allow(PIC::devices::keyboard); // erlaube unterbrechungen von keyboard
 
    return;
 }
@@ -44,8 +44,11 @@ void Keyboard::trigger(){
             kout.getpos(xpos, ypos);
             kout.setpos(xpos, ypos);
             if(zeichen == '\b'){
-               if(--xpos < 0){
-                  kout.setpos(80, --ypos);
+               char* read;
+               read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
+               while(*read == ' '){
+                  --xpos;
+                  read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
                }
                kout.setpos(xpos, ypos);
                kout.print(" ", 1);

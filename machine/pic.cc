@@ -55,3 +55,18 @@ void PIC::forbid(int interrupt_device){
    // setze neue maske
    dev->outb(mask);
 }
+
+bool PIC::is_masked(int interrupt_device){
+   int mask = 0;
+   IO_Port *dev;
+
+   if(interrupt_device <= 7){
+      dev = &master;
+   }else{
+      dev = &slave;
+      interrupt_device -= 8;
+   }
+   mask = dev->inb();
+
+   return (mask >> interrupt_device) & 1;
+}

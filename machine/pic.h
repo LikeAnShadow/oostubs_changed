@@ -19,10 +19,6 @@
 
 #include "machine/io_port.h"
 
-enum {
-      timer    = 0,
-      keyboard = 1
-};
 
 
 class PIC {
@@ -30,6 +26,10 @@ private:
    IO_Port master, slave;
    PIC(const PIC &copy); // Verhindere Kopieren
 public:
+    enum devices{
+        timer    = 0,
+        keyboard = 1
+    };
    PIC();
    // Lässt zu, dass der PIC Unterbrechungen des Geräts Nummer interrupt_device
    // an den Prozessor weiterleitet

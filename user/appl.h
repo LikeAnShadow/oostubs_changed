@@ -15,6 +15,8 @@
 #include "machine/keyctrl.h"
 #include "device/keyboard.h"
 #include "machine/cpu.h"
+#include "machine/pic.h"
+#include "machine/plugbox.h"
 
 class Application 
  

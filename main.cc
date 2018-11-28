@@ -12,6 +12,7 @@
 CGA_Stream kout;            // Ausgabeobjekt
 Application appl;           // Testanwendung
 Plugbox plugbox;            // Plugbox :D
+PIC pic;                    // Programmable Interrupt Controller
 
 
 int main()
