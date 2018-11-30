@@ -276,12 +276,12 @@ Key Keyboard_Controller::key_hit ()
     int ctrl = ctrl_port.inb();
 
     // Wenn ctrl nicht leer
-    if((ctrl & 0x01) == 0x01){
+    if((ctrl & outb) == outb){
         // Hole Wert
         code = data_port.inb();
 
         // ungueltige Eingabe
-        if(ctrl & 0x20){
+        if(ctrl & auxb){
             return invalid;
         }
         if(key_decoded()){
@@ -290,7 +290,7 @@ Key Keyboard_Controller::key_hit ()
         }
         else{
             // Hole noch ein byte
-            if((ctrl & 0x01) == 0x01){
+            if((ctrl & outb) == outb){
                 // Setze prefix (befindet sich im vermuteten code
                 prefix = code;
                 // Setze richtigen Code
@@ -358,22 +358,22 @@ void Keyboard_Controller::set_repeat_rate (int speed, int delay)
        einstellung += (speed & 0x1F);
 
        // Warte auf CPU
-       while ((ctrl_port.inb() & 0x02) == 0x02) {}
+       while ((ctrl_port.inb() & inpb) == inpb) {}
 
        // 0xf3 heisst set_speed
-       data_port.outb(0xf3);
+       data_port.outb(kbd_cmd::set_speed);
 
        // Solange 0x01, ist Befehl set_speed noch nicht angekommen
-       while ((ctrl_port.inb() & 0x01) != 0x01) {}
+       while ((ctrl_port.inb() & outb) != outb) {}
 
        // Bereit einstellung zu schreiben
-       if (ctrl_port.inb() == 0xfa) {
+       if (ctrl_port.inb() == kbd_reply::ack) {
           // Schreibe einstellung
           data_port.outb(einstellung);
           // Warte wieder auf okay
-          while ((ctrl_port.inb() & 0x01) != 0x01) {}
+          while ((ctrl_port.inb() & outb) != outb) {}
           // Controller hat ein Problem
-          if (ctrl_port.inb() == 0xfa) {
+          if (ctrl_port.inb() == kbd_reply::ack) {
              kout << "\n ALARM";
           }
        }
@@ -387,23 +387,23 @@ void Keyboard_Controller::set_led (char led, bool on)
       // Sind leds on? Wenn nicht, dann alle ausschalten
       leds = on ? leds | led : leds & ~led;
       // Warte, bis Controller bereit
-      while((ctrl_port.inb() & 0x02) != 0);
+      while((ctrl_port.inb() & inpb) != 0);
 
       // fuehre set_led aus
-      data_port.outb(0xed);
+      data_port.outb(kbd_cmd::set_led);
 
       // Warte auf Zustimmung
-      while((ctrl_port.inb() & 0x01) == 0){}
+      while((ctrl_port.inb() & outb) == 0){}
 
       // Wenn zustimmung (ACK) gegeben, dann
-      if(data_port.inb() !=  0xfa) {
+      if(data_port.inb() !=  kbd_reply::ack) {
          return;
       }
       // schreibe neuen ledstatus
       data_port.outb(leds);
       // Warte auf Zustimmung
-      while((ctrl_port.inb() & 0x01) == 0){}
-      if(data_port.inb() != 0xfa){
+      while((ctrl_port.inb() & outb) == 0){}
+      if(data_port.inb() != kbd_reply::ack){
          return;
       }
    }

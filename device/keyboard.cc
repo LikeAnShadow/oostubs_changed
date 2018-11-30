@@ -44,13 +44,16 @@ void Keyboard::trigger(){
             kout.getpos(xpos, ypos);
             kout.setpos(xpos, ypos);
             if(zeichen == '\b'){
-               char* read;
-               read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
-               while(*read == ' '){
-                  --xpos;
-                  read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
+               char *read;
+               read = (char *)0xb8000 + 2 *(xpos + ypos * 80)-2;
+               if(*read == ' '){
+                  while(*read == ' '){
+                     --xpos;
+                     read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
+                  }
+                  xpos+= 2;
                }
-               kout.setpos(xpos, ypos);
+               kout.setpos(--xpos, ypos);
                kout.print(" ", 1);
                kout.setpos(xpos, ypos);
             }else{
