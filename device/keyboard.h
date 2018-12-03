@@ -17,12 +17,14 @@
 #include "machine/plugbox.h"
 #include "machine/pic.h"
 #include "device/cgastr.h"
+#include "guard/guard.h"
  
 class Keyboard : public Gate, public Keyboard_Controller
 {
 private:
       Keyboard (const Keyboard &copy); // Verhindere Kopieren
 
+      char zeichen;
 public:
 
     Keyboard();
@@ -30,7 +32,19 @@ public:
     // PLUGIN: 'Anstoepseln' der Tastatur. Ab sofort werden Tasten erkannt.
     void plugin ();
 
-    void trigger();
+    /*
+     * Diese Methode ist unnötig, sobald das Pro-/Epilog Modell implementiert
+     * wurde
+     */
+    //void trigger();
+
+    /*
+     * Unterbrechungsbehandlung der Tastatur. Nicht jede Taste ist auch ein
+     * auswertbares ASCII-Zeichen.
+     */
+    bool prolog();
+
+    void epilog();
  };
 
 #endif

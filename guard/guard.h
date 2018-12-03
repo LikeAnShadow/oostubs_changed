@@ -14,15 +14,28 @@
 #ifndef __Guard_include__
 #define __Guard_include__
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-        
-class Guard : public Locker
- {
+// INCLUDES
+#include "guard/locker.h"
+#include "guard/gate.h"
+#include "machine/cpu.h"
+#include "object/queue.h"
+
+class Guard : public Locker {
+
 private:
     Guard (const Guard &copy); // Verhindere Kopieren
+
+    // Queue zum anhängen der gates;
+    Queue gates;
+
 public:
-    Guard () {}
-/* Hier muesst ihr selbst Code vervollstaendigen */          
- };
+    Guard ();
+
+    // zum Verlassen des kritischen Abschnittes
+    void leave();
+
+    // Damit wird ein Prozess angehängt. Wird von guardian aufgerufen
+    void relay(Gate *item);
+};
 
 #endif

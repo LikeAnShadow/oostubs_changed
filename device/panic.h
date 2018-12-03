@@ -26,7 +26,11 @@ private:
 public:
    Panic () {}
 
-   void trigger();
+   bool prolog();
+   /*
+    * Wird durch das Pro-/Epilog Modell erstetzt
+    */
+   //void trigger();
  };
 
 #endif

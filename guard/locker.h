@@ -15,11 +15,26 @@
 #ifndef __Locker_include__
 #define __Locker_include__
 
-class Locker
- {
+class Locker {
 private:
     Locker(const Locker &copy); // Verhindere Kopieren
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- };
+
+    bool available;
+public:
+    Locker() : available(true){}
+
+    void enter(){
+       available = false;
+    }
+
+protected:
+    void retne(){
+       available = true;
+    }
+
+    bool avail(){
+       return available;
+    }
+};
 
 #endif

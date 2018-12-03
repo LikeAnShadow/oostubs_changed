@@ -11,8 +11,39 @@
 #ifndef __Gate_include__
 #define __Gate_include__
 
-class Gate{
+#include "object/chain.h"
+
+class Gate : public Chain{
+private:
+    bool isQueued;
+
 public:
-    virtual void trigger() = 0;
+    /*
+     * Unnötig durch Pro-/Epilog Modell
+     */
+    //virtual void trigger() = 0;
+
+    Gate(){
+       isQueued = false;
+    }
+
+    /*
+     * Prolog der Unterbrechungsbehandlung. Ein Rückgabewert true zeigt an,
+     * dass der zugehörige Epilog ausgeführt werden soll.
+     */
+    virtual bool prolog() = 0;
+
+    /*
+     * Epilogue der Unterbrechungsbehandlung.
+     */
+    virtual void epilog() {}
+
+    void queued(bool q){
+       this -> isQueued = q;
+    }
+
+    bool queued(){
+       return this -> isQueued;
+    }
 };
 #endif

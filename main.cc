@@ -7,13 +7,16 @@
 
 #include "user/appl.h"
 #include "machine/plugbox.h"
+#include "device/cgastr.h"
+#include "guard/guard.h"
+#include "machine/pic.h"
 
 
 CGA_Stream kout;            // Ausgabeobjekt
 Application appl;           // Testanwendung
 Plugbox plugbox;            // Plugbox :D
-PIC pic;                    // Programmable Interrupt Controller
-
+Guard guard;                // Guess what
+PIC pic;                    // Programmable interrupt controller
 
 int main()
 {

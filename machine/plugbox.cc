@@ -13,7 +13,7 @@
 #include "machine/plugbox.h"
 
 Plugbox::Plugbox(){
-   Panic panic; // Panic-Objekt. Wofür? Keine Ahnung
+   static Panic panic;
 
    // Initialisiere interrupt vector table
    for(int i = 0; i < 64; i++){
@@ -22,7 +22,12 @@ Plugbox::Plugbox(){
 }
 
 void Plugbox::assign(unsigned int slot, Gate &gate){
-   this -> interruptVectorTable[slot] = &gate;
+   if(slot < 64){
+      this -> interruptVectorTable[slot] = &gate;
+   } else{
+      Panic panic;
+      panic.prolog();
+   }
 }
 
 Gate& Plugbox::report(unsigned int slot){

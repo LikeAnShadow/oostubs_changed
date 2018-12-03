@@ -53,7 +53,7 @@ void PIC::forbid(int interrupt_device){
    // berechne neue maske
    mask |= ~(1<<interrupt_device);
    // setze neue maske
-   dev->outb(mask);
+   dev->outb(mask); //Handbuch korrekturlesen: erfolgreich korrekturlesen
 }
 
 bool PIC::is_masked(int interrupt_device){

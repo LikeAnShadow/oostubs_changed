@@ -15,6 +15,29 @@
 #ifndef __Secure_include__
 #define __Secure_include__
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
+#include "guard/guard.h"
+
+extern Guard guard;
+
+class Secure{
+public:
+    /*
+     * Konstruktor:
+     * Kritischer Abschnitt wird betreten
+     * C++ führt immer automatisch Konstruktoren aus und wenn scope verlassen
+     * wird, wird automatische Destruktor ausgeführt
+     */
+    Secure(){
+       guard.enter();
+    }
+    /*
+     * Destruktor:
+     * Kritischer Abschnitt wird verlassen
+     * Wird aufgerufen, sobald der scope verlassen wird (c++-Eigenschaft)
+     */
+    ~Secure(){
+       guard.leave();
+    }
+};
 
 #endif

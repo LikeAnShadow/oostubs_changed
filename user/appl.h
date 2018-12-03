@@ -12,11 +12,9 @@
 #define __application_include__
 
 #include "device/cgastr.h"
-#include "machine/keyctrl.h"
 #include "device/keyboard.h"
 #include "machine/cpu.h"
-#include "machine/pic.h"
-#include "machine/plugbox.h"
+#include "guard/secure.h"
 
 class Application 
  
