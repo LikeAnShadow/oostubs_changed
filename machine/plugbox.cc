@@ -12,8 +12,9 @@
 
 #include "machine/plugbox.h"
 
+Panic panic;
+
 Plugbox::Plugbox(){
-   static Panic panic;
 
    // Initialisiere interrupt vector table
    for(int i = 0; i < 64; i++){
@@ -22,10 +23,9 @@ Plugbox::Plugbox(){
 }
 
 void Plugbox::assign(unsigned int slot, Gate &gate){
-   if(slot < 64){
+   if(slot < 64 && slot >= 0){
       this -> interruptVectorTable[slot] = &gate;
    } else{
-      Panic panic;
       panic.prolog();
    }
 }
