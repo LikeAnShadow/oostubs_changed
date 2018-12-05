@@ -76,11 +76,10 @@ bool Keyboard::prolog(){
    Key input;
 
    input = this -> key_hit();
-
-   do{
+   if(input.valid()){
       // erneut die reboot-Routine
       if((input.ctrl() == true) && (input.alt() == true) && (input.scancode()
-      == 0x53)){
+                                                             == 0x53)){
          this -> reboot();
       }
       else{ // muss es ein Zeichen sein.... wahrscheinlich
@@ -93,8 +92,7 @@ bool Keyboard::prolog(){
             return true; // um epilog anzufordern
          }
       }
-
-   }while(input.valid()); // weitere Zeichen abfragen, wenn vorhanden
+   }
 
    return false;
 }
