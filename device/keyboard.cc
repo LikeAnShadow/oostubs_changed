@@ -123,6 +123,6 @@ void Keyboard::epilog(){
       }
 
       kout.print(&zeichen, 1);
-      zeichen = 0;
    }
+   zeichen = 0;
 }
