@@ -289,18 +289,7 @@ Key Keyboard_Controller::key_hit ()
             return gather;
         }
         else{
-            // Hole noch ein byte
-            if((ctrl & outb) == outb){
-                // Setze prefix (befindet sich im vermuteten code
-                prefix = code;
-                // Setze richtigen Code
-                code = data_port.inb();
-
-                // Sollte jetzt aber richtig interpretiert sein
-                if(key_decoded()){
-                    return gather;
-                }
-            }
+            return invalid;
         }
     }
 

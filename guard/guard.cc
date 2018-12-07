@@ -12,7 +12,9 @@
 /*****************************************************************************/
 
 #include "guard/guard.h"
+#include "device/cgastr.h"
 
+extern CGA_Stream kout;
 
 Guard::Guard() : Locker() {}
 
@@ -37,7 +39,6 @@ void Guard::leave(){
       cpu.disable_int();
       item = (Gate*)gates.dequeue();
    }
-
    this -> retne();
    cpu.enable_int();
 }
@@ -48,7 +49,6 @@ void Guard::leave(){
  */
 void Guard::relay(Gate *item){
    CPU cpu;
-
    if(avail()){
       enter();
       cpu.enable_int();

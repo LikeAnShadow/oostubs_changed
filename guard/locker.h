@@ -15,6 +15,10 @@
 #ifndef __Locker_include__
 #define __Locker_include__
 
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
+
 class Locker {
 private:
     Locker(const Locker &copy); // Verhindere Kopieren

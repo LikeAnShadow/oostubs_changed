@@ -90,10 +90,11 @@ bool Keyboard::prolog(){
             }
             this -> zeichen = zeichen;
             return true; // um epilog anzufordern
+         } else{
+            return false;
          }
       }
    }
-
    return false;
 }
 
@@ -119,8 +120,8 @@ void Keyboard::epilog(){
          xpos = 0;
          ypos++;
       }
-
-      kout.print(&zeichen, 1);
+      kout << zeichen;
+      kout.flush();
    }
    zeichen = 0;
 }
