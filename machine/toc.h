@@ -37,6 +37,33 @@ struct toc {
 	void *rbp;
 	void *rsp;
 	char fpu[108]; // Optional: 108 Byte extended CPU state (MMX, SSE, ...)
+	// fpu wurde in der implementierung nicht beachtet, folgt vielleicht
+	// irgendwann
 };
+
+/*
+ * Diese Funktion bereitet die Struktur toc für die erste Aktivierung vor.
+ * Dazu müssen Registerinhalte (toc) und Stack (tos) so initialisiert werden,
+ * dass bei der ersten Aktivierung die Ausführung mit der Funktion kickoff
+ * beginnt, die wiederum den Zeiger object als siebenten Parameter auf dem
+ * Stack vorfinden muss (bei x86_64 werden die ersten sechs Parameter über
+ * Register übergeben).
+ */
+void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
+        void*, void*, void*, void*, void*), void* object);
+
+/*
+ * Diese Funktion lädt die nicht-flüchtigen Prozessorregister mit den Inhalten
+ * der Struktur regs.
+ */
+void toc_go (struct toc* regs);
+
+/*
+ * Diese Funktion führt einen Kontextwechsel durch. Dazu müssen die aktuellen
+ * Registerwerte in regs_now gesichert und durch die Werte von regs_then
+ * ersetzt werden.
+ */
+void toc_switch (struct toc* regs_now, struct toc* regs_then);
+
 
 #endif

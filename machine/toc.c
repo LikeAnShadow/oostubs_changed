@@ -16,7 +16,22 @@
 
 // TOC_SETTLE: bereitet den Kontext der Koroutine fuer den ersten
 //             Aufruf vor.
-void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*, void*, void*, void*, void*, void*), void* object)
- {
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- }
+void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
+                  void*, void*, void*, void*, void*), void* object){
+   // Stackpointer initialisieren
+   void** tos_ptr = (void**)tos;
+
+   // Objekt auf dem Stack legen
+   *(--tos_ptr) = object;
+
+   // Rücksprung für kickoff 0
+   *(--tos_ptr) = (void*)0;
+
+   // Rücksprungpunkt für resume
+   *(--tos_ptr) = (void*)kickoff;
+
+   // Schließlich Stackpointer speichern
+   regs -> rsp = (void*)tos_ptr;
+}
+
+// toc_go und toc_switch werden in toc.asm implementiert
