@@ -11,7 +11,17 @@
 /* naechstes laufen soll.                                                    */
 /*****************************************************************************/
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
+#include "user/loop.h"
+
+void Loop::action(){
+    int count = 2;
+
+    while (count--){
+        kout << "\nHier ist Loop mit Zeichen: " << zeichen;
+        scheduler.resume();
+    }
+
+    kout << endl << "Loop mit Zeichen " << zeichen << " wird abgeschlossen";
+    scheduler.exit();
+}
  

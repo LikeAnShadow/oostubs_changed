@@ -21,11 +21,43 @@
 
 #include "machine/toc.h"
 
-class Coroutine
- {
+
+
+class Coroutine{
 private:
-      Coroutine(const Coroutine &copy); // Verhindere Kopieren
-/* Hier muesst ihr selbst Code vervollstaendigen */     
- };
+    Coroutine(const Coroutine &copy); // Verhindere Kopieren
+
+public:
+    toc toc1;
+
+    /*
+     * Im Coroutinen Konstruktor werden die Registerwerte so initialisiert,
+     * dass der Stackpointer initial auf tos zeigt und bei der ersten
+     * Aktivierung die Ausführung mit der Funktion kickoff beginnt.
+     */
+    Coroutine(void *tos);
+
+    /*
+     * Diese Methode dient der ersten Aktivierung der ersten Koroutine im
+     * System. Daher müssen hier keine Registerwerte gerettet werden.
+     */
+    void go();
+
+    /*
+     * Mit dieser Methode wird ein Koroutinenwechsel ausgelöst. Die aktuelle
+     * Belegung der nicht-flüchtigen Register wird in dem toc Element
+     * gesichert und durch die Werte von next (dem toc Element der nächsten
+     * Koroutine) ersetzt.
+     */
+    void resume(Coroutine &next);
+
+    /*
+     * Die Methode action stellt die eigentliche Aufgabe der Koroutine dar.
+     * Da jedoch nicht alle Koroutinen im System dasselbe tun sollen, kann
+     * action erst in einer spezialisierten Klasse (z.B. in Application)
+     * definiert werden.
+     */
+    virtual void action() = 0;
+};
 
 #endif

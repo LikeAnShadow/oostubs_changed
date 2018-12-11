@@ -15,13 +15,38 @@
 #ifndef __dispatch_include__
 #define __dispatch_include__
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-        
-class Dispatcher
- {
+#include "thread/coroutine.h"
+
+
+class Dispatcher{
 private:
-      Dispatcher(const Dispatcher &copy); // Verhindere Kopieren
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- };
+    Dispatcher(const Dispatcher &copy); // Verhindere Kopieren
+
+    Coroutine *ptr;
+public:
+    /*
+     * Der Konstruktor initialisiert den Life-Pointer mit Null, um
+     * anzuzeigen, dass noch keine Koroutine bekannt ist.
+     */
+    Dispatcher ();
+
+    /*
+     * Mit dieser Methode wird die Koroutine first im Life-Pointer vermerkt
+     * und gestartet.
+     */
+    void go (Coroutine &first);
+
+    /*
+     * Diese Methode setzt den Life-Pointer auf next und führt einen
+     * Koroutinenwechsel vom alten zum neuen Life-Pointer durch.
+     */
+    void dispatch (Coroutine &next);
+
+    /*
+     * Hiermit kann abgefragt werden, welche Koroutine gerade im Besitz des
+     * Prozessors ist.
+     */
+    Coroutine *active ();
+};
 
 #endif

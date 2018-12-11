@@ -8,7 +8,53 @@
 /* Implementierung des Schedulers.                                           */
 /*****************************************************************************/
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
+#include "thread/scheduler.h"
+
+Scheduler::Scheduler(const Scheduler &copy){}
+
+void Scheduler::ready (Entrant &that){
+    list.enqueue(&that);
+}
+
+void Scheduler::schedule(){
+    // Hole nächstes
+    Entrant *next = (Entrant*)list.dequeue();
+
+    if(!next) return;
+
+    // dispatchen
+    go(*next);
+}
+
+void Scheduler::exit(){
+    Entrant *next = (Entrant*)list.dequeue();
+
+    if(!next) while(1);
+
+    dispatch(*next);
+}
+
+void Scheduler::kill(Entrant &that){
+    // Einfach aus der Liste löschen... fertig
+    list.remove(&that);
+}
+
+void Scheduler::resume(){
+    Entrant *ptr;
+
+    // Zeiger auf aktuellen Thread setzen
+    ptr = (Entrant*)active();
+
+    if(!ptr) return;
+
+    // aktuellen Prozess in die Liste eintragen
+    list.enqueue(ptr);
+
+    // nächsten Prozess holen
+    ptr = (Entrant*)list.dequeue();
+
+    if(!ptr) return;
+
+    // aktiviere Prozess
+    dispatch(*ptr);
+}

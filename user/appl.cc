@@ -16,30 +16,16 @@
          
 /* GLOBALE VARIABLEN */
 extern CGA_Stream kout;
+extern Scheduler scheduler;
 
-
-
-Application::Application() {}
          
 void Application::action () {
-    /*
-     * Tests für Aufgabe 1
-     */
-    /*Erster Test
-     *
-     *
-     * \
     /*int x,y;
     kout.getpos(x,y);
     kout.setpos(x,y+9);
     // Gibt eine seltsame Ausgabe aus
     kout << "Hallo Welt" << endl << "Das funktioniert ja ganz ok" << endl;
     kout.flush();*/
-    /*
-     * Zweiter Test
-     *
-     *
-     */
     /*int x,y;
 
     kout.getpos(x,y);
@@ -62,11 +48,6 @@ void Application::action () {
     kout.print("oostubs:  ", 10);
     kout.setpos(x+9,y);
 */
-    /*
-     * Dritter Test
-     *
-     *
-     */
     /*Keyboard_Controller kc;
     Key input;
     kc.set_repeat_rate(0xAA,0x01);
@@ -120,10 +101,7 @@ void Application::action () {
             break;
         }
     }while(1);*/
-    /*
-     * Tests für Aufgabe 3
-     */
-    Keyboard keyboard;
+    /*Keyboard keyboard;
     int i = 0, count = 0;
     int x,y;
     char zeichen;
@@ -150,5 +128,36 @@ void Application::action () {
 
           count++;
        }
-    }
+    }*/
+    CPU cpu;
+    Keyboard keyboard;
+
+    // Initialisierungen
+    kout.setpos(0,0);
+    keyboard.plugin();
+
+    cpu.enable_int();
+
+    kout << "Test: resume wird ausgeführt";
+    kout.flush();
+    scheduler.resume();
+
+    kout << endl << "Test: resume wird erneut ausgeführt";
+    kout.flush();
+    scheduler.resume();
+
+    kout << "Test: kill wird ausgeführt für Loop mit a";
+    kout.flush();
+    scheduler.kill(*ptr);
+
+    kout << endl << "Test: resume wird ausgeführt";
+    kout.flush();
+    scheduler.resume();
+
+    kout << endl << "Test: Terminierung!! Keine weiteren Ausgaben";
+    kout.flush();
+    scheduler.exit();
+
+    // Sollte nicht mehr erreicht werden
+    kout << endl << "Test: Es wurde trotzdem noch eine Ausgabe gemacht";
 }

@@ -13,6 +13,25 @@
 #ifndef __loop_include__
 #define __loop_include__
 
-/* Hier muesst ihr selbst Code vervollstaendigen */ 
- 
+#include "thread/entrant.h"
+#include "device/cgastr.h"
+#include "thread/scheduler.h"
+
+extern Scheduler scheduler;
+extern  CGA_Stream kout;
+
+class Loop : public Entrant {
+
+public:
+    Loop(void* tos, char zeichen) : Entrant(tos){
+        this -> zeichen = zeichen;
+    }
+
+    void action();
+
+private:
+
+    char zeichen;
+};
+
 #endif

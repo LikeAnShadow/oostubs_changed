@@ -15,19 +15,24 @@
 #include "device/keyboard.h"
 #include "machine/cpu.h"
 #include "guard/secure.h"
+#include "thread/scheduler.h"
+#include "thread/entrant.h"
 
-class Application 
+class Application : public Entrant
  
  {
 private:
     Application (const Application &copy); // Verhindere Kopieren
 
-    bool shutdown(char* buf, unsigned int length);
-    bool exit(char* buf, unsigned int length);
+    Entrant *ptr;
 
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
-    Application();
+    Application(void *tos) : Entrant(tos){}
+
+    void setKillEntrant(Entrant *loop){
+        this -> ptr = loop;
+    }
           
     void action ();
  };
