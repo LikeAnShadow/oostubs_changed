@@ -138,19 +138,19 @@ void Application::action () {
 
     cpu.enable_int();
 
-    kout << "Test: resume wird ausgeführt";
+    kout << "Test: resume wird ausgefuehrt";
     kout.flush();
     scheduler.resume();
 
-    kout << endl << "Test: resume wird erneut ausgeführt";
+    kout << endl << "Test: resume wird erneut ausgefuehrt";
     kout.flush();
     scheduler.resume();
 
-    kout << "Test: kill wird ausgeführt für Loop mit a";
+    kout << endl << "Test: kill wird ausgefuehrt fuer Loop mit a";
     kout.flush();
     scheduler.kill(*ptr);
 
-    kout << endl << "Test: resume wird ausgeführt";
+    kout << endl << "Test: resume wird ausgefuehrt";
     kout.flush();
     scheduler.resume();
 

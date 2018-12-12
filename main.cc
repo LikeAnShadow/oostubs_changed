@@ -20,6 +20,7 @@ CGA_Stream kout;            // Ausgabeobjekt
 Plugbox plugbox;            // Plugbox :D
 Guard guard;                // Guess what
 Scheduler scheduler;        // Scheduler
+PIC pic;                    // programmable interrupt controler
 
 unsigned char stack1[STACK_SIZE];
 unsigned char stack2[STACK_SIZE];

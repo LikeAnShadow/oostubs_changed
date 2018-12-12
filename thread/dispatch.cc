@@ -35,7 +35,7 @@ void Dispatcher::dispatch(Coroutine &next){
     this -> ptr = &next;
 
     // Koroutinenwechsel
-    temp -> resume();
+    temp -> resume(*temp);
 }
 
 Coroutine* Dispatcher::active(){

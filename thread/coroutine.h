@@ -19,7 +19,10 @@
 #ifndef __Coroutine_include__
 #define __Coroutine_include__
 
-#include "machine/toc.h"
+extern "C"{
+    #include "machine/toc.h"
+};
+
 
 
 

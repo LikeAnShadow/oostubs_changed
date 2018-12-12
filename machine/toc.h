@@ -49,8 +49,8 @@ struct toc {
  * Stack vorfinden muss (bei x86_64 werden die ersten sechs Parameter über
  * Register übergeben).
  */
-void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
-        void*, void*, void*, void*, void*), void* object);
+/*void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
+        void*, void*, void*, void*, void*), void* object);*/
 
 /*
  * Diese Funktion lädt die nicht-flüchtigen Prozessorregister mit den Inhalten

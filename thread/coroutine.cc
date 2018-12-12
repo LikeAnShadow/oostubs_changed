@@ -19,18 +19,19 @@
 // Funktionen, die auf der C- oder Assembler-Ebene implementiert werden,
 // muessen als extern "C" deklariert werden, da sie nicht dem Name-Mangeling
 // von C++ entsprechen.
-/*extern "C" {
+extern "C" {
    void toc_go (struct toc* regs);
    void toc_switch (struct toc* regs_now, struct toc* regs_then);
    void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
-                     void*, void*, void*, void*, void*), void* object);
-}*/
+                  void*, void*, void*, void*, Coroutine*), void* object);
+}
 
 extern void kickoff(void*, void*, void*, void*, void*, void*, Coroutine*);
 
+
 Coroutine::Coroutine(void* tos){
-   toc_settle( &this -> toc1, tos, void (*kickoff)(nullptr, nullptr, nullptr,
-           nullptr, nullptr, nullptr, this), this);
+    toc_settle( &this -> toc1, tos, &kickoff, this);
+
 }
 
 void Coroutine::go(){
