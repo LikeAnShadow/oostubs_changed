@@ -33,6 +33,8 @@ int main()
     Loop loop2(stack3+STACK_SIZE, 'b');
 
     appl.setKillEntrant(&loop1);
+    kout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    kout.flush();
 
     scheduler.ready(appl);
     scheduler.ready(loop1);

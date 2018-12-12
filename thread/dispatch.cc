@@ -13,12 +13,17 @@
 /*****************************************************************************/
 
 #include "thread/dispatch.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 Dispatcher::Dispatcher(){
     this -> ptr = 0;
 }
 
 void Dispatcher::go(Coroutine &first){
+    kout << endl << "Dispatcher: go";
+    kout.flush();
     // Prozess speichern
     this -> ptr = &first;
     // Prozess ausführen
@@ -26,6 +31,8 @@ void Dispatcher::go(Coroutine &first){
 }
 
 void Dispatcher::dispatch(Coroutine &next){
+    kout << endl << "Dispatcher: dispatch";
+    kout.flush();
     // aktuellen Prozess zwischenspeichern
     Coroutine *temp = this -> ptr;
 
@@ -39,5 +46,7 @@ void Dispatcher::dispatch(Coroutine &next){
 }
 
 Coroutine* Dispatcher::active(){
+    kout << endl << "Dispatcher: active";
+    kout.flush();
     return this -> ptr;
 }

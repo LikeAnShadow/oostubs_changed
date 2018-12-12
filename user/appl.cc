@@ -131,14 +131,17 @@ void Application::action () {
     }*/
     CPU cpu;
     Keyboard keyboard;
+    int x,y;
 
     // Initialisierungen
-    kout.setpos(0,0);
+    kout.getpos(x,y);
+    kout.setpos(x,y);
     keyboard.plugin();
 
     cpu.enable_int();
 
-    kout << "Test: resume wird ausgefuehrt";
+
+    kout << endl << "Test: resume wird ausgefuehrt";
     kout.flush();
     scheduler.resume();
 
