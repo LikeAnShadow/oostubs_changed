@@ -22,8 +22,8 @@ Dispatcher::Dispatcher(){
 }
 
 void Dispatcher::go(Coroutine &first){
-    kout << endl << "Dispatcher: go";
-    kout.flush();
+    //kout << endl << "Dispatcher: go";
+    //kout.flush();
     // Prozess speichern
     this -> ptr = &first;
     // Prozess ausführen
@@ -31,8 +31,8 @@ void Dispatcher::go(Coroutine &first){
 }
 
 void Dispatcher::dispatch(Coroutine &next){
-    kout << endl << "Dispatcher: dispatch";
-    kout.flush();
+    //kout << endl << "Dispatcher: dispatch";
+    //kout.flush();
     // aktuellen Prozess zwischenspeichern
     Coroutine *temp = this -> ptr;
 
@@ -40,13 +40,14 @@ void Dispatcher::dispatch(Coroutine &next){
 
     // Pointer neu setzen
     this -> ptr = &next;
-
+    //kout << endl << temp << " ist naechster Thread";
+    //kout.flush();
     // Koroutinenwechsel
     temp -> resume(*temp);
 }
 
 Coroutine* Dispatcher::active(){
-    kout << endl << "Dispatcher: active";
-    kout.flush();
+    //kout << endl << "Dispatcher: active";
+    //kout.flush();
     return this -> ptr;
 }

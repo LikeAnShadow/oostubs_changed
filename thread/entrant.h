@@ -13,6 +13,9 @@
 
 #include "thread/coroutine.h"
 #include "object/chain.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 class Entrant : public Coroutine, public Chain{
 private:
@@ -25,7 +28,6 @@ public:
      */
     Entrant (void *tos)
         : Coroutine(tos){
-
     }
 };
 

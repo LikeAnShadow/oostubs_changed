@@ -18,20 +18,28 @@
 #include "thread/scheduler.h"
 #include "thread/entrant.h"
 
+extern CGA_Stream kout;
+
 class Application : public Entrant
  
  {
 private:
     Application (const Application &copy); // Verhindere Kopieren
 
-    Entrant *ptr;
+    Entrant *ptr1;
+    Entrant *ptr2;
 
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
-    Application(void *tos) : Entrant(tos){}
+    Application(void *tos) : Entrant(tos){
+    }
 
-    void setKillEntrant(Entrant *loop){
-        this -> ptr = loop;
+    void killLoop1(Entrant *loop){
+        this -> ptr1 = loop;
+    }
+
+    void killLoop2(Entrant *loop){
+        this -> ptr2 = loop;
     }
           
     void action ();

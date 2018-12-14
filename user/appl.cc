@@ -15,7 +15,6 @@
 #define BUFFERSIZE 128
          
 /* GLOBALE VARIABLEN */
-extern CGA_Stream kout;
 extern Scheduler scheduler;
 
          
@@ -130,13 +129,11 @@ void Application::action () {
        }
     }*/
     CPU cpu;
-    Keyboard keyboard;
     int x,y;
 
     // Initialisierungen
     kout.getpos(x,y);
     kout.setpos(x,y);
-    keyboard.plugin();
 
     cpu.enable_int();
 
@@ -149,9 +146,10 @@ void Application::action () {
     kout.flush();
     scheduler.resume();
 
-    kout << endl << "Test: kill wird ausgefuehrt fuer Loop mit a";
+    kout << endl << "Test: kille beide Loops";
     kout.flush();
-    scheduler.kill(*ptr);
+    scheduler.kill(*ptr1);
+    scheduler.kill(*ptr2);
 
     kout << endl << "Test: resume wird ausgefuehrt";
     kout.flush();
@@ -160,7 +158,9 @@ void Application::action () {
     kout << endl << "Test: Terminierung!! Keine weiteren Ausgaben";
     kout.flush();
     scheduler.exit();
+    scheduler.exit();
 
     // Sollte nicht mehr erreicht werden
     kout << endl << "Test: Es wurde trotzdem noch eine Ausgabe gemacht";
+    kout.flush();
 }

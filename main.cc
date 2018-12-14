@@ -12,6 +12,8 @@
 #include "machine/pic.h"
 #include "thread/scheduler.h"
 #include "user/loop.h"
+#include "device/keyboard.h"
+
 
 #define STACK_SIZE 1024
 
@@ -28,13 +30,18 @@ unsigned char stack3[STACK_SIZE];
 
 int main()
 {
+    Keyboard keyboard;
+    keyboard.plugin();
+
+    kout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
+    kout.flush();
+
     Application appl(stack1+STACK_SIZE);
     Loop loop1(stack2+STACK_SIZE, 'a');
     Loop loop2(stack3+STACK_SIZE, 'b');
 
-    appl.setKillEntrant(&loop1);
-    kout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    kout.flush();
+    appl.killLoop1(&loop1);
+    appl.killLoop2(&loop2);
 
     scheduler.ready(appl);
     scheduler.ready(loop1);

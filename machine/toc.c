@@ -19,19 +19,19 @@
 void toc_settle (struct toc* regs, void* tos, void (*kickoff)(void*, void*,
                   void*, void*, void*, void*, void*), void* object){
    // Stackpointer initialisieren
-   void** tos_ptr = (void**)tos;
+   void** tos_ptr = tos;
 
-   // Objekt auf dem Stack legen
+   // Objekt auf den Stack legen
    *(--tos_ptr) = object;
 
    // Rücksprung für kickoff 0
-   *(--tos_ptr) = (void*)0;
+   *(--tos_ptr) = 0;
 
    // Rücksprungpunkt für resume
-   *(--tos_ptr) = (void*)kickoff;
+   *(--tos_ptr) = kickoff;
 
    // Schließlich Stackpointer speichern
-   regs -> rsp = (void*)tos_ptr;
+   regs -> rsp = tos_ptr;
 }
 
 // toc_go und toc_switch werden in toc.asm implementiert

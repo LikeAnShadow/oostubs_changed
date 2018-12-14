@@ -16,6 +16,9 @@
 #define __KICKOFF_CC
 
 #include "thread/coroutine.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 /**
  * Diese Methode realisiert den Sprung von der C Ebene zur
@@ -25,7 +28,10 @@
 void kickoff (void *dummy1, void *dummy2, void *dummy3, void *dummy4,
         void *dummy5, void *dummy6, Coroutine* object)
 {
-   object->action();
+    //kout << endl << "Kickoff: application is:  ";
+    //kout << object;
+    //kout.flush();
+    object->action();
 }
 
 #endif	//__KICKOFF_CC
