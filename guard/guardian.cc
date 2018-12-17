@@ -28,8 +28,5 @@ extern CGA_Stream kout;
 void guardian (unsigned int slot) {
    if(plugbox.report(slot).prolog()){
       guard.relay(&plugbox.report(slot));
-   }/* else{
-      kout << "Prolog liefert false\n\n";
-      kout.flush();
-   }*/
+   }
 }

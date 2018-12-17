@@ -33,12 +33,6 @@ public:
     void plugin ();
 
     /*
-     * Diese Methode ist unnötig, sobald das Pro-/Epilog Modell implementiert
-     * wurde
-     */
-    //void trigger();
-
-    /*
      * Unterbrechungsbehandlung der Tastatur. Nicht jede Taste ist auch ein
      * auswertbares ASCII-Zeichen.
      */

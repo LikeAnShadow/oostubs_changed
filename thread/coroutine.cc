@@ -32,23 +32,13 @@ extern void kickoff(void*, void*, void*, void*, void*, void*, Coroutine*);
 extern CGA_Stream kout;
 
 Coroutine::Coroutine(void* tos){
-    //kout << endl << "Coroutine: toc_settle";
-    //kout.flush();
     toc_settle( &this -> toc1, tos, &kickoff, this);
 }
 
 void Coroutine::go(){
-    //kout << endl << "Coroutine: go";
-    //kout.flush();
     toc_go(&this->toc1);
-    //kout << endl << "Coroutine: go finished";
-    //kout.flush();
 }
 
 void Coroutine::resume (Coroutine& next) {
-    //kout << endl << "Coroutine: toc_switch";
-    //kout.flush();
     toc_switch(&(this->toc1), &(next.toc1));
-    //kout << endl << "Coroutine: resume";
-    //kout.flush();
 }

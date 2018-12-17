@@ -33,8 +33,12 @@ int main()
     Keyboard keyboard;
     keyboard.plugin();
 
-    kout << "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
-    kout.flush();
+    kout.setpos(0,0);
+    for(int i = 0; i < 25; i++){
+        for(int j = 0; j< 80; j++){
+            kout.print(" ", 1);
+        }
+    }
 
     Application appl(stack1+STACK_SIZE);
     Loop loop1(stack2+STACK_SIZE, 'a');

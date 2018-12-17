@@ -27,10 +27,7 @@ public:
    Panic () {}
 
    bool prolog();
-   /*
-    * Wird durch das Pro-/Epilog Modell erstetzt
-    */
-   //void trigger();
+
  };
 
 #endif

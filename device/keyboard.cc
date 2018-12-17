@@ -24,53 +24,6 @@ void Keyboard::plugin(){
    return;
 }
 
-/*
-void Keyboard::trigger(){
-   char zeichen;
-   Key input;
-   int xpos, ypos;
-
-   input = this->key_hit();
-
-   do{
-      // endlich eine Möglichkeit ein reboot abzufangen. Hier mit strg-alt-entf
-      if(input.ctrl() == true && input.alt() == true && input.scancode() ==
-      0x53){
-         this -> reboot(); //0x53 steht für entf-Taste
-      }
-      else{
-         zeichen = input.ascii();
-         if(zeichen){
-            kout.getpos(xpos, ypos);
-            kout.setpos(xpos, ypos);
-            if(zeichen == '\b'){
-               char *read;
-               read = (char *)0xb8000 + 2 *(xpos + ypos * 80)-2;
-               if(*read == ' '){
-                  while(*read == ' '){
-                     --xpos;
-                     read = (char *)0xb8000 + 2 *(xpos + ypos * 80);
-                  }
-                  xpos+= 2;
-               }
-               kout.setpos(--xpos, ypos);
-               kout.print(" ", 1);
-               kout.setpos(xpos, ypos);
-            }else{
-               if(++xpos >= 80){
-                  xpos = 0;
-                  ypos++;
-               }
-
-               kout.print(&zeichen, 1);
-            }
-         }
-         input = this -> key_hit();
-      }
-   }while (input.valid());
-}
-*/
-
 bool Keyboard::prolog(){
    char zeichen;
    Key input;

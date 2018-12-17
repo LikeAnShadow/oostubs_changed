@@ -42,115 +42,31 @@ O_Stream& O_Stream::operator<< (char c){
 
 O_Stream& O_Stream::operator<< (unsigned short number) {
     cast(number, true);
-    /*switch (man) {
-        case BIN:
-            castBin((short) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char *) &number, sizeof(short));
-            break;
-        case OCT:
-            castValue((long long) number, 8);
-            break;
-    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (short number) {
     cast(number);
-    /*switch (man) {
-        case BIN:
-            castBin((short) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char *) &number, sizeof(short));
-            break;
-        case OCT:
-            castValue((long long) number, 8);
-            break;
-    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (unsigned int number) {
     cast(number, true);
-    /*switch (man) {
-        case BIN:
-            castBin((int) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char *) &number, sizeof(int));
-            break;
-        case OCT:
-            castValue((long long) number, 8, true);
-            break;
-    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (int number) {
     cast(number);
-    /*switch (man) {
-        case BIN:
-            castBin((int) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char *) &number, sizeof(int));
-            break;
-        case OCT:
-            castValue((long long) number, 8, true);
-            break;
-    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (unsigned long number){
     cast(number, true);
-    /*switch (man){
-        case BIN:
-            castBin((long) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char*) &number, 4);
-            break;
-        case OCT:
-            castValue((long long) number, 8);
-            break;
-    }*/
     return *this;
 }
 
 O_Stream& O_Stream::operator<< (long number){
     cast(number);
-    /*switch (man){
-        case BIN:
-            castBin((long) number);
-            break;
-        case DEC:
-            castValue((long long) number);
-            break;
-        case HEX:
-            castHex((char*) &number, 4);
-            break;
-        case OCT:
-            castValue((long long) number, 8);
-            break;
-    }*/
     return *this;
 }
 

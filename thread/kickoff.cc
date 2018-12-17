@@ -26,11 +26,7 @@ extern CGA_Stream kout;
  * des als Parameter vorgefundenen Koroutinenobjektes object aufruft.
  */
 void kickoff (void *dummy1, void *dummy2, void *dummy3, void *dummy4,
-        void *dummy5, void *dummy6, Coroutine* object)
-{
-    //kout << endl << "Kickoff: application is:  ";
-    //kout << object;
-    //kout.flush();
+        void *dummy5, void *dummy6, Coroutine* object) {
     object->action();
 }
 
