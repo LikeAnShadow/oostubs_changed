@@ -17,11 +17,13 @@ void Loop::action(){
     int count = 2;
 
     while (count--){
-        kout << "\nHier ist Loop mit Zeichen: " << zeichen;
+        kout << endl << "Loop: Hier ist " << zeichen << "-Loop in der " <<
+        2-count <<
+        ". Schleife";
         scheduler.resume();
     }
 
-    kout << endl << "Loop mit Zeichen " << zeichen << " wird abgeschlossen";
+    kout << endl << "Loop: " << zeichen << "-Loop wird beendet";
     scheduler.exit();
 }
  

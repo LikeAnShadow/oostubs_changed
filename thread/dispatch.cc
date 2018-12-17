@@ -43,7 +43,7 @@ void Dispatcher::dispatch(Coroutine &next){
     //kout << endl << temp << " ist naechster Thread";
     //kout.flush();
     // Koroutinenwechsel
-    temp -> resume(*temp);
+    temp -> resume(*ptr);
 }
 
 Coroutine* Dispatcher::active(){

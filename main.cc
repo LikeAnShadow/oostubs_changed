@@ -41,7 +41,6 @@ int main()
     Loop loop2(stack3+STACK_SIZE, 'b');
 
     appl.killLoop1(&loop1);
-    appl.killLoop2(&loop2);
 
     scheduler.ready(appl);
     scheduler.ready(loop1);

@@ -129,35 +129,32 @@ void Application::action () {
        }
     }*/
     CPU cpu;
-    int x,y;
 
     // Initialisierungen
-    kout.getpos(x,y);
-    kout.setpos(x,y);
+    kout.setpos(0,0);
 
     cpu.enable_int();
 
-
-    kout << endl << "Test: resume wird ausgefuehrt";
+    kout << "Test: Starte Loop-routinen. Es sollten a und b ausgegeben werden";
     kout.flush();
     scheduler.resume();
 
-    kout << endl << "Test: resume wird erneut ausgefuehrt";
+    kout << endl << "Test: Starte zweite Loop-routine. Selbes Ergebnis";
     kout.flush();
     scheduler.resume();
 
-    kout << endl << "Test: kille beide Loops";
+    kout << endl << "Test: Kill a-Loop aus dem Scheduler. Sollte nicht mehr"
+                    " auftauchen";
     kout.flush();
     scheduler.kill(*ptr1);
-    scheduler.kill(*ptr2);
 
-    kout << endl << "Test: resume wird ausgefuehrt";
+    kout << endl << "Test: b-Loop sollte jetzt beenden";
     kout.flush();
     scheduler.resume();
 
-    kout << endl << "Test: Terminierung!! Keine weiteren Ausgaben";
+    kout << endl << "Test: Terminiere alle noch anstehenden Threads. Es "
+                    "sollten keine Ausgaben mehr kommen";
     kout.flush();
-    scheduler.exit();
     scheduler.exit();
 
     // Sollte nicht mehr erreicht werden
