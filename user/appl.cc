@@ -12,8 +12,6 @@
 
 #include "user/appl.h"
 
-#define BUFFERSIZE 128
-         
 /* GLOBALE VARIABLEN */
 extern Scheduler scheduler;
 

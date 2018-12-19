@@ -28,15 +28,13 @@
 toc_go:
     ; lade alle register
     ; offsets aus toc.inc übernehmen
-    mov rax, rdi
-
-    mov rbx, [rax+rbx_offset]
-    mov r12, [rax+r12_offset]
-    mov r13, [rax+r13_offset]
-    mov r14, [rax+r14_offset]
-    mov r15, [rax+r15_offset]
-    mov rbp, [rax+rbp_offset]
-    mov rsp, [rax+rsp_offset]
+    mov rbx, [rdi+rbx_offset]
+    mov r12, [rdi+r12_offset]
+    mov r13, [rdi+r13_offset]
+    mov r14, [rdi+r14_offset]
+    mov r15, [rdi+r15_offset]
+    mov rbp, [rdi+rbp_offset]
+    mov rsp, [rdi+rsp_offset]
 
     ret
     ; fertig
@@ -52,26 +50,22 @@ toc_go:
 
 toc_switch:
     ; erst register sichern
-    mov rdx, rdi
-
-    mov [rdx+rbx_offset], rbx
-    mov [rdx+r12_offset], r12
-    mov [rdx+r13_offset], r13
-    mov [rdx+r14_offset], r14
-    mov [rdx+r15_offset], r15
-    mov [rdx+rbp_offset], rbp
-    mov [rdx+rsp_offset], rsp
-
-    mov rax, rsi
+    mov [rdi+rbx_offset], rbx
+    mov [rdi+r12_offset], r12
+    mov [rdi+r13_offset], r13
+    mov [rdi+r14_offset], r14
+    mov [rdi+r15_offset], r15
+    mov [rdi+rbp_offset], rbp
+    mov [rdi+rsp_offset], rsp
 
     ; dann register laden
-	mov rbx, [rax+rbx_offset]
-	mov r12, [rax+r12_offset]
-	mov r13, [rax+r13_offset]
-	mov r14, [rax+r14_offset]
-	mov r15, [rax+r15_offset]
-	mov rbp, [rax+rbp_offset]
-	mov rsp, [rax+rsp_offset]
+	mov rbx, [rsi+rbx_offset]
+	mov r12, [rsi+r12_offset]
+	mov r13, [rsi+r13_offset]
+	mov r14, [rsi+r14_offset]
+	mov r15, [rsi+r15_offset]
+	mov rbp, [rsi+rbp_offset]
+	mov rsp, [rsi+rsp_offset]
 
 	ret
 	; fertig

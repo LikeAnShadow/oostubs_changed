@@ -14,7 +14,6 @@
 #include "user/loop.h"
 #include "device/keyboard.h"
 
-
 #define STACK_SIZE 1024
 
 
