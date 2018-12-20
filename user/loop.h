@@ -13,25 +13,19 @@
 #ifndef __loop_include__
 #define __loop_include__
 
-#include "thread/entrant.h"
+#include "syscall/thread.h"
 #include "device/cgastr.h"
-#include "thread/scheduler.h"
+#include "syscall/guarded_scheduler.h"
 
-extern Scheduler scheduler;
+extern Guarded_Scheduler scheduler;
 extern  CGA_Stream kout;
 
-class Loop : public Entrant {
+class Loop : public Thread {
 
 public:
-    Loop(void* tos, char zeichen) : Entrant(tos){
-        this -> zeichen = zeichen;
-    }
+    Loop(void* tos) : Thread(tos){}
 
     void action();
-
-private:
-
-    char zeichen;
 };
 
 #endif

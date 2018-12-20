@@ -12,8 +12,11 @@
 #define __pit_include__
 
 #include "machine/io_port.h"
+#include "device/cgastr.h"
 
 #define PI 3.14159265358979323846  /* pi */
+
+extern CGA_Stream kout;
 
 class PIT {
 private:
@@ -32,7 +35,7 @@ public:
      * keine ganz exakte Einstellung im Mikrosekundenbereich möglich.
      */
     PIT (int us) : steuerregister(0x43), zaehler(0x40){
-      interval (us);
+        interval (us);
     }
 
     /*

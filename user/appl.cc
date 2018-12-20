@@ -12,42 +12,53 @@
 
 #include "user/appl.h"
 
-/* GLOBALE VARIABLEN */
-extern Scheduler scheduler;
-
          
 void Application::action () {
 
-    CPU cpu;
+    int wait = 0;
+    Keyboard keyboard;
+    keyboard.plugin();
 
-    // Initialisierungen
     kout.setpos(0,0);
 
-    cpu.enable_int();
-
-    kout << "Test: Starte Loop-routinen. Es sollten a und b ausgegeben werden";
+    //resume
+    kout << "Appl: Pause";
     kout.flush();
-    scheduler.resume();
+    wait=100000000;
+    while(wait) wait--;
 
-    kout << endl << "Test: Starte zweite Loop-routine. Selbes Ergebnis";
+    //nochmal resume
+    kout << endl << "Appl: Pause";
     kout.flush();
-    scheduler.resume();
+    wait=100000000;
+    while(wait) wait--;
 
-    kout << endl << "Test: Kill a-Loop aus dem Scheduler. Sollte nicht mehr"
-                    " auftauchen";
+    //nochmal resume
+    kout << endl << "Appl: Pause";
+    kout.flush();
+    wait=100000000;
+    while(wait) wait--;
+
+    //Kill
+    kout << "\nAppl: Loop wird abgeschossen mit kill";
     kout.flush();
     scheduler.kill(*ptr1);
 
-    kout << endl << "Test: b-Loop sollte jetzt beenden";
+    //resume
+    kout << endl << "Appl: Pause";
     kout.flush();
-    scheduler.resume();
+    wait=100000000;
+    while(wait) wait--;
 
-    kout << endl << "Test: Terminiere alle noch anstehenden Threads. Es "
-                    "sollten keine Ausgaben mehr kommen";
+    //Exit
+    kout << endl << "Appl: Terminierung";
     kout.flush();
+
+    wait=100000000;
+    while(wait) wait--;
+
     scheduler.exit();
 
-    // Sollte nicht mehr erreicht werden
-    kout << endl << "Test: Es wurde trotzdem noch eine Ausgabe gemacht";
-    kout.flush();
+    //Ausgabe wenn fehlerhaft
+    kout << endl << "Appl: Ausgabe trotz Terminierung!";
 }

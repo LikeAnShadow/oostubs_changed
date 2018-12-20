@@ -14,6 +14,9 @@
 #include "thread/scheduler.h"
 #include "guard/secure.h"
 #include "syscall/thread.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 class Guarded_Scheduler : public Scheduler{
 private:

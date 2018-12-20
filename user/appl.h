@@ -15,30 +15,32 @@
 #include "device/keyboard.h"
 #include "machine/cpu.h"
 #include "guard/secure.h"
-#include "thread/scheduler.h"
-#include "thread/entrant.h"
+#include "syscall/thread.h"
+#include "syscall/guarded_scheduler.h"
 
 extern CGA_Stream kout;
+extern Guarded_Scheduler scheduler;
+extern CPU cpu;
 
-class Application : public Entrant
+class Application : public Thread
  
  {
 private:
     Application (const Application &copy); // Verhindere Kopieren
 
-    Entrant *ptr1;
-    Entrant *ptr2;
+    Thread *ptr1;
+    Thread *ptr2;
 
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
-    Application(void *tos) : Entrant(tos){
+    Application(void *tos) : Thread(tos){
     }
 
-    void killLoop1(Entrant *loop){
+    void killLoop1(Thread *loop){
         this -> ptr1 = loop;
     }
 
-    void killLoop2(Entrant *loop){
+    void killLoop2(Thread *loop){
         this -> ptr2 = loop;
     }
           

@@ -14,16 +14,18 @@
 #include "user/loop.h"
 
 void Loop::action(){
-    int count = 2;
+    int wait;
+    int count = 0;
+    kout << "\nLoop: Doing stuff ";
+    kout.flush();
 
-    while (count--){
-        kout << endl << "Loop: Hier ist " << zeichen << "-Loop in der " <<
-        2-count <<
-        ". Schleife";
-        scheduler.resume();
+    //Endlosschleife
+    while(1) {
+        kout << count++ << " ";
+        kout.flush();
+
+        wait = 100000000;
+        while (wait > 0) wait--;
     }
-
-    kout << endl << "Loop: " << zeichen << "-Loop wird beendet";
-    scheduler.exit();
 }
  
