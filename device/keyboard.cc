@@ -14,6 +14,7 @@ extern Plugbox plugbox;
 extern CGA_Stream kout;
 extern PIC pic;
 extern Guard guard;
+extern Guarded_Scheduler scheduler;
 
 Keyboard::Keyboard() : Gate(), Keyboard_Controller(), zeichen(0) {}
 
@@ -77,4 +78,5 @@ void Keyboard::epilog(){
       kout.flush();
    }
    zeichen = 0;
+   scheduler.Scheduler::resume();
 }

@@ -47,14 +47,14 @@ int main()
 
     guard.enter();
 
-    scheduler.ready(appl);
-    scheduler.ready(loop1);
+    scheduler.Scheduler::ready(appl);
+    scheduler.Scheduler::ready(loop1);
 
     watch.windup();
 
     cpu.enable_int();
 
-    scheduler.schedule();
+    scheduler.Scheduler::schedule();
 
     // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
     while(1);

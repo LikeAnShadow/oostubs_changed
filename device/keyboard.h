@@ -18,6 +18,8 @@
 #include "machine/pic.h"
 #include "device/cgastr.h"
 #include "guard/guard.h"
+#include "syscall/guarded_scheduler.h"
+
  
 class Keyboard : public Gate, public Keyboard_Controller
 {

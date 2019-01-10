@@ -8,10 +8,13 @@
 /*****************************************************************************/
 
 #include "device/watch.h"
+#include "guard/guard.h"
+
 
 extern Plugbox plugbox;
 extern Guarded_Scheduler scheduler;
 extern PIC pic;
+extern Guard guard;
 
 void Watch::windup(){
     plugbox.assign(plugbox.timer, *this); // melde timer an
@@ -23,8 +26,8 @@ bool Watch::prolog(){
 }
 
 void Watch::epilog(){
-    kout << endl << "Watch: Resume zum naechsten Thread";
-    kout.flush();
-    scheduler.resume();
+    /*kout << endl << "Watch: Resume zum naechsten Thread";
+    kout.flush();*/
+    scheduler.Scheduler::resume();
 }
 

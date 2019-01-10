@@ -17,8 +17,11 @@
 
 #include "thread/coroutine.h"
 #include "device/cgastr.h"
+#include "guard/guard.h"
+
 
 extern CGA_Stream kout;
+extern Guard guard;
 
 /**
  * Diese Methode realisiert den Sprung von der C Ebene zur
@@ -27,6 +30,7 @@ extern CGA_Stream kout;
  */
 void kickoff (void *dummy1, void *dummy2, void *dummy3, void *dummy4,
         void *dummy5, void *dummy6, Coroutine* object) {
+    guard.leave();
     object->action();
 }
 

@@ -27,6 +27,6 @@ extern CGA_Stream kout;
 
 void guardian (unsigned int slot) {
    if(plugbox.report(slot).prolog()){
-      guard.relay(&plugbox.report(slot));
+       guard.relay(&plugbox.report(slot));
    }
 }

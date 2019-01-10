@@ -22,19 +22,19 @@ void Application::action () {
     kout.setpos(0,0);
 
     //resume
-    kout << "Appl: Pause";
+    kout << "Appl: Hier bin ich! 1";
     kout.flush();
     wait=100000000;
     while(wait) wait--;
 
     //nochmal resume
-    kout << endl << "Appl: Pause";
+    kout << endl << "Appl: Hier bin ich! 2";
     kout.flush();
     wait=100000000;
     while(wait) wait--;
 
     //nochmal resume
-    kout << endl << "Appl: Pause";
+    kout << endl << "Appl: Hier bin ich! 3";
     kout.flush();
     wait=100000000;
     while(wait) wait--;
@@ -42,22 +42,22 @@ void Application::action () {
     //Kill
     kout << "\nAppl: Loop wird abgeschossen mit kill";
     kout.flush();
-    scheduler.kill(*ptr1);
+    scheduler.Scheduler::kill(*ptr1);
 
     //resume
-    kout << endl << "Appl: Pause";
+    kout << endl << "Appl: Hier bin ich! 4";
     kout.flush();
     wait=100000000;
     while(wait) wait--;
 
     //Exit
-    kout << endl << "Appl: Terminierung";
+    kout << endl << "Appl: Terminierung" << endl;
     kout.flush();
 
     wait=100000000;
     while(wait) wait--;
 
-    scheduler.exit();
+    scheduler.Scheduler::exit();
 
     //Ausgabe wenn fehlerhaft
     kout << endl << "Appl: Ausgabe trotz Terminierung!";

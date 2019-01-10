@@ -16,6 +16,8 @@
 
 #include "thread/coroutine.h"
 #include "device/cgastr.h"
+#include "guard/guard.h"
+
 
 // Funktionen, die auf der C- oder Assembler-Ebene implementiert werden,
 // muessen als extern "C" deklariert werden, da sie nicht dem Name-Mangeling
@@ -30,6 +32,7 @@ extern "C" {
 extern void kickoff(void*, void*, void*, void*, void*, void*, Coroutine*);
 
 extern CGA_Stream kout;
+extern Guard guard;
 
 Coroutine::Coroutine(void* tos){
     toc_settle( &this -> toc1, tos, &kickoff, this);

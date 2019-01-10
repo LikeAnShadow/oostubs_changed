@@ -16,6 +16,8 @@
 #define __Locker_include__
 
 #include "device/cgastr.h"
+#include "device/panic.h"
+
 
 extern CGA_Stream kout;
 
@@ -24,16 +26,32 @@ private:
     Locker(const Locker &copy); // Verhindere Kopieren
 
     bool available;
+
+    Panic panic;
 public:
     Locker() : available(true){}
 
     void enter(){
-       available = false;
+        if(!available){
+            kout << "\nalready locked!\n";
+            kout.flush();
+            panic.prolog();
+        }
+        /*kout << "\nLocker: locked!\n";
+        kout.flush();*/
+        available = false;
     }
 
 protected:
     void retne(){
-       available = true;
+        if(available){
+            kout << "\nalready unlocked!\n";
+            kout.flush();
+            panic.prolog();
+        }
+        /*kout << "\nLocker: unlocked!\n";
+        kout.flush();*/
+        available = true;
     }
 
     bool avail(){

@@ -16,16 +16,15 @@
 void Loop::action(){
     int wait;
     int count = 0;
-    kout << "\nLoop: Doing stuff ";
-    kout.flush();
 
     //Endlosschleife
     while(1) {
-        kout << count++ << " ";
+        kout << "\nLoop: Doing stuff "<< count++ << " ";
         kout.flush();
 
         wait = 100000000;
         while (wait > 0) wait--;
     }
+
 }
  
