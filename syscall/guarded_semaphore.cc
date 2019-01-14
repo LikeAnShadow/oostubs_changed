@@ -2,32 +2,30 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                              W A T C H                                    */
+/*                   G U A R D E D _ S E M A P H O R E                       */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
+/* Systemaufrufschnittstelle zum Semaphor.                                   */
 /*****************************************************************************/
 
-#include "device/watch.h"
-#include "guard/guard.h"
+#include "syscall/guarded_semaphore.h"
 
+Guarded_Semaphore::Guarded_Semaphore(int c) : Semaphore(c){}
 
-extern Plugbox plugbox;
-extern Guarded_Scheduler scheduler;
-extern PIC pic;
-extern Guard guard;
-
-void Watch::windup(){
-    plugbox.assign(plugbox.timer, *this); // melde timer an
-    pic.allow(PIC::devices::timer); // erlaube interrupts durch timer
+void Guarded_Semaphore::p(){
+    Secure section;
+    Semaphore::p();
 }
 
-bool Watch::prolog(char* msg){
-    return true;
+void Guarded_Semaphore::v(){
+    Secure section;
+    Semaphore::v();
 }
 
-void Watch::epilog(){
-    /*kout << endl << "Watch: Resume zum naechsten Thread";
-    kout.flush();*/
-    scheduler.Scheduler::resume();
+void Guarded_Semaphore::wait(){
+    p();
 }
 
+void Guarded_Semaphore::signal(){
+    v();
+}

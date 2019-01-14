@@ -54,7 +54,7 @@ int main()
 
     cpu.enable_int();
 
-    scheduler.Scheduler::schedule();
+    scheduler.schedule();
 
     // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
     while(1);

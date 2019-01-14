@@ -2,33 +2,29 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                                 P A N I C                                 */
+/*                         G U A R D E D _ B U Z Z E R                       */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-/* Standard Unterbrechungsbehandlung.                                        */
+/* Schnittstelle von Anwendungsthreads zu Buzzer-Objekten.                   */
 /*****************************************************************************/
 
-#ifndef __panic_include__
-#define __panic_include__
+#ifndef __Guarded_Buzzer_include__
+#define __Guarded_Buzzer_include__
 
-/* INCLUDES */
+#include "meeting/buzzer.h"
 
-#include "guard/gate.h"
-#include "device/cgastr.h"
-#include "machine/cpu.h"
-
-class Panic : public Gate
-/* Hier muesst ihr selbst Code vervollstaendigen */         
- {
+class Guarded_Buzzer : public Buzzer
+{
 private:
-    Panic (const Panic &copy); // Verhindere Kopieren
-
+    Guarded_Buzzer(const Guarded_Buzzer &copy); // Verhindere Kopieren
 public:
-   Panic () {}
+    Guarded_Buzzer() {}
 
-   bool prolog(char* msg = "");
+    //virtual ~Guarded_Buzzer();
 
- };
+    void set(int ms);
+
+    void sleep();
+};
 
 #endif
-

@@ -31,7 +31,7 @@ public:
      * Prolog der Unterbrechungsbehandlung. Ein Rückgabewert true zeigt an,
      * dass der zugehörige Epilog ausgeführt werden soll.
      */
-    virtual bool prolog() = 0;
+    virtual bool prolog(char* msg = "") = 0;
 
     /*
      * Epilogue der Unterbrechungsbehandlung.

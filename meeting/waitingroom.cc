@@ -2,33 +2,20 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                                 P A N I C                                 */
+/*                        W A I T I N G R O O M                              */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-/* Standard Unterbrechungsbehandlung.                                        */
+/* Liste von Threads, die auf ein Ereignis warten.                           */
 /*****************************************************************************/
 
-#ifndef __panic_include__
-#define __panic_include__
+#include "meeting/waitingroom.h"
+#include "thread/customer.h"
 
-/* INCLUDES */
+Waitingroom::~Waitingroom(){}
 
-#include "guard/gate.h"
-#include "device/cgastr.h"
-#include "machine/cpu.h"
-
-class Panic : public Gate
-/* Hier muesst ihr selbst Code vervollstaendigen */         
- {
-private:
-    Panic (const Panic &copy); // Verhindere Kopieren
-
-public:
-   Panic () {}
-
-   bool prolog(char* msg = "");
-
- };
-
-#endif
-
+void Waitingroom::remove(Customer* customer){
+    // Sicherheitsabfrage, falls null
+    if(!customer) return;
+    // Wenn nicht null, dann entfernen mit der Methode von Queue
+    Queue::remove(customer);
+}

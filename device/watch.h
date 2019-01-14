@@ -33,7 +33,7 @@ public:
     void windup ();
 
     // PROLOGUE: Prologue der Uhrenunterbrechung
-    bool prolog ();
+    bool prolog (char* msg = "");
 
     // EPILOGUE: Epilogue der Uhrenunterbrechung
     void epilog ();

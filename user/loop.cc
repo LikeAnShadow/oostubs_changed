@@ -19,7 +19,8 @@ void Loop::action(){
 
     //Endlosschleife
     while(1) {
-        kout << "\nLoop: Doing stuff "<< count++ << " ";
+        kout.setpos(0,2);
+        kout << "Loop: Doing stuff("<< count++ << ")";
         kout.flush();
 
         wait = 100000000;

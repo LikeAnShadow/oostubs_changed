@@ -2,34 +2,27 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                         A P P L I C A T I O N                             */
+/*                        G U A R D E D _ B U Z Z E R                        */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-/* Die Klasse Application definiert die einzige Anwendung von OO-Stubs.      */
+/* Schnittstelle von Anwendungsthreads zu Buzzer-Objekten.                   */
 /*****************************************************************************/
 
 /* INCLUDES */
 
-#include "user/appl.h"
+#include "syscall/guarded_buzzer.h"
+#include "guard/secure.h"
 
-         
-void Application::action () {
-    int wait;
-    int count = 0;
-    Keyboard keyboard;
-    keyboard.plugin();
+/*Guarded_Buzzer::~Guarded_Buzzer(){
+    Secure section;
+}*/
 
-    kout.setpos(0,0);
+void Guarded_Buzzer::set(int ms){
+    Secure section;
+    Buzzer::set(ms);
+}
 
-    kout << "Appl: First!";
-    kout.flush();
-
-    while (1){
-        kout.setpos(0,1);
-        kout << "Appl: Doing important stuff(" << count++ << ")";
-        kout.flush();
-
-        wait =  10000000;
-        while (wait > 0) wait--;
-    }
+void Guarded_Buzzer::sleep(){
+    Secure section;
+    Buzzer::sleep();
 }

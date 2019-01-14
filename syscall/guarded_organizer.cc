@@ -2,32 +2,30 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                              W A T C H                                    */
+/*                    G U A R D E D _ O R G A N I Z E R                      */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
+/* Systemaufrufschnittstelle zum Organizer.                                  */
 /*****************************************************************************/
 
-#include "device/watch.h"
-#include "guard/guard.h"
+#include "syscall/guarded_organizer.h"
 
-
-extern Plugbox plugbox;
-extern Guarded_Scheduler scheduler;
-extern PIC pic;
-extern Guard guard;
-
-void Watch::windup(){
-    plugbox.assign(plugbox.timer, *this); // melde timer an
-    pic.allow(PIC::devices::timer); // erlaube interrupts durch timer
+void Guarded_Organizer::ready(Thread& that){
+    Secure section;
+    Organizer::ready(that);
 }
 
-bool Watch::prolog(char* msg){
-    return true;
+void Guarded_Organizer::exit(){
+    Secure section;
+    Organizer::exit();
 }
 
-void Watch::epilog(){
-    /*kout << endl << "Watch: Resume zum naechsten Thread";
-    kout.flush();*/
-    scheduler.Scheduler::resume();
+void Guarded_Organizer::kill(Thread& that){
+    Secure section;
+    Organizer::kill(that);
 }
 
+void Guarded_Organizer::resume(){
+    Secure secure;
+    Organizer::resume();
+}

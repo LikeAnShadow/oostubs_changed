@@ -2,33 +2,15 @@
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
-/*                                 P A N I C                                 */
+/*                   G U A R D E D _ K E Y B O A R D                         */
 /*                                                                           */
 /*---------------------------------------------------------------------------*/
-/* Standard Unterbrechungsbehandlung.                                        */
+/* Systemaufrufschnittstelle zur Tastatur.                                   */
 /*****************************************************************************/
 
-#ifndef __panic_include__
-#define __panic_include__
+#include "syscall/guarded_keyboard.h"
 
-/* INCLUDES */
-
-#include "guard/gate.h"
-#include "device/cgastr.h"
-#include "machine/cpu.h"
-
-class Panic : public Gate
-/* Hier muesst ihr selbst Code vervollstaendigen */         
- {
-private:
-    Panic (const Panic &copy); // Verhindere Kopieren
-
-public:
-   Panic () {}
-
-   bool prolog(char* msg = "");
-
- };
-
-#endif
-
+Key Guarded_Keyboard::getKey(){
+    Secure section;
+    return Keyboard::getKey();
+}
