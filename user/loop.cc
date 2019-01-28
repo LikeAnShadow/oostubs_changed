@@ -14,6 +14,7 @@
 #include "user/loop.h"
 
 void Loop::action(){
+    int wait = 10000;
     int count = 0;
     Guarded_Buzzer buzzer;
 
@@ -23,8 +24,10 @@ void Loop::action(){
         kout << "Loop: Doing stuff("<< count++ << ")";
         kout.flush();
 
-        buzzer.set(10000);
-        buzzer.sleep();
+        while (wait-- > 0);
+        wait = 10000;
+        /*buzzer.set(10000);
+        buzzer.sleep();*/
     }
 
 }

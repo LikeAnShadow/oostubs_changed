@@ -53,15 +53,17 @@ int main()
 
     guard.enter();
 
-    guarded_organizer.ready(appl);
-    guarded_organizer.ready(loop1);
+    guarded_organizer.Scheduler::ready(appl);
+    guarded_organizer.Scheduler::ready(loop1);
 
-    watch.windup();
     keyboard.plugin();
+    watch.windup();
+
 
     cpu.enable_int();
 
-    guarded_organizer.schedule();
+
+    guarded_organizer.Scheduler::schedule();
 
     // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
     while(1);

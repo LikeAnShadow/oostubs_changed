@@ -33,7 +33,7 @@ public:
 
     void enter(){
         if(!available){
-            panic.prolog("already locked");
+            //panic.prolog("already locked");
         }
         /*kout << "\nLocker: locked!\n";
         kout.flush();*/
@@ -43,7 +43,7 @@ public:
 protected:
     void retne(){
         if(available){
-            panic.prolog("already unlocked");
+            //panic.prolog("already unlocked");
         }
         /*kout << "\nLocker: unlocked!\n";
         kout.flush();*/

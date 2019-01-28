@@ -9,6 +9,9 @@
 /*****************************************************************************/
 
 #include "syscall/guarded_organizer.h"
+#include "device/cgastr.h"
+
+extern CGA_Stream kout;
 
 void Guarded_Organizer::ready(Thread& that){
     Secure section;
@@ -26,6 +29,6 @@ void Guarded_Organizer::kill(Thread& that){
 }
 
 void Guarded_Organizer::resume(){
-    Secure secure;
+    Secure section;
     Scheduler::resume();
 }

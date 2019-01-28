@@ -9,6 +9,7 @@
 
 #include "device/watch.h"
 #include "guard/guard.h"
+#include "device/cgastr.h"
 
 
 extern Plugbox plugbox;
@@ -16,6 +17,7 @@ extern Guarded_Organizer guarded_organizer;
 extern PIC pic;
 extern Guard guard;
 extern Bellringer bellringer;
+extern CGA_Stream kout;
 
 void Watch::windup(){
     plugbox.assign(plugbox.timer, *this); // melde timer an

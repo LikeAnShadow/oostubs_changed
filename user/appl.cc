@@ -14,6 +14,7 @@
 
          
 void Application::action () {
+    int wait = 1000000;
     int count = 0;
     Guarded_Buzzer buzzer;
 
@@ -27,7 +28,7 @@ void Application::action () {
         kout << "Appl: Doing important stuff(" << count++ << ")";
         kout.flush();
 
-        buzzer.set(10000);
-        buzzer.sleep();
+        while (wait-- > 0);
+        wait = 1000000;
     }
 }
