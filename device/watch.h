@@ -14,10 +14,12 @@
 
 #include "guard/gate.h"
 #include "machine/pit.h"
-#include "syscall/guarded_scheduler.h"
+#include "syscall/guarded_organizer.h"
 #include "machine/pic.h"
 #include "machine/plugbox.h"
 #include "device/cgastr.h"
+#include "meeting/bellringer.h"
+
 
 extern CGA_Stream kout;
 

@@ -12,9 +12,10 @@
 
 
 extern Plugbox plugbox;
-extern Guarded_Scheduler scheduler;
+extern Guarded_Organizer guarded_organizer;
 extern PIC pic;
 extern Guard guard;
+extern Bellringer bellringer;
 
 void Watch::windup(){
     plugbox.assign(plugbox.timer, *this); // melde timer an
@@ -28,6 +29,7 @@ bool Watch::prolog(char* msg){
 void Watch::epilog(){
     /*kout << endl << "Watch: Resume zum naechsten Thread";
     kout.flush();*/
-    scheduler.Scheduler::resume();
+    bellringer.check();
+    guarded_organizer.resume();
 }
 

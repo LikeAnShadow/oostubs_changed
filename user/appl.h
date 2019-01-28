@@ -16,10 +16,11 @@
 #include "machine/cpu.h"
 #include "guard/secure.h"
 #include "syscall/thread.h"
-#include "syscall/guarded_scheduler.h"
+#include "syscall/guarded_organizer.h"
+#include "syscall/guarded_buzzer.h"
 
 extern CGA_Stream kout;
-extern Guarded_Scheduler scheduler;
+extern Guarded_Organizer scheduler;
 extern CPU cpu;
 
 class Application : public Thread

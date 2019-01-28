@@ -62,7 +62,8 @@ void Keyboard::epilog(){
     // Wenn Tastaturbuffer voll,
     if(this -> add(this -> key)){
         // dann nicht noch weiter füllen und error ausgeben, sonst
-        kout << "Tastaturbuffer voll. Bitte langsamer schreiben";
+        kout.setpos(0,5);
+        kout << "Aufgabe 6 gerade in Arbeit, sorry";
         kout.flush();
     } else{
         // Semaphore erhöhen

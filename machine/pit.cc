@@ -20,9 +20,12 @@ void PIT::interval(int us) {
     // Klappt leider nicht, da Multiplikation mit PI zum Absturz führt
     // deswegen *128/107 was auch sehr nahe dran ist, aber etwas zu groß
     // mit -(us*3/1000) passt es ziemlich genau
-    temp *= 128;
-    temp /= 107;
-    temp = temp - ( ( us*3 ) / 1000 );
+    temp /= 828;
+    temp *= 1000;
+//    temp *= 128;
+//    temp /= 107;
+//    temp = temp - ( ( us*3 ) / 1000 );
+    //temp *= 1.19366207;
 
     // wegen 2 Byte Größe
     unsigned short ergebnis = (unsigned short)temp;

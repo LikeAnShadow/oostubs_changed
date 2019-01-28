@@ -14,10 +14,8 @@
 
          
 void Application::action () {
-    int wait;
     int count = 0;
-    Keyboard keyboard;
-    keyboard.plugin();
+    Guarded_Buzzer buzzer;
 
     kout.setpos(0,0);
 
@@ -29,7 +27,7 @@ void Application::action () {
         kout << "Appl: Doing important stuff(" << count++ << ")";
         kout.flush();
 
-        wait =  10000000;
-        while (wait > 0) wait--;
+        buzzer.set(10000);
+        buzzer.sleep();
     }
 }

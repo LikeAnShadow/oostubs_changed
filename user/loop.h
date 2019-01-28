@@ -15,6 +15,7 @@
 
 #include "syscall/thread.h"
 #include "device/cgastr.h"
+#include "syscall/guarded_buzzer.h"
 
 extern  CGA_Stream kout;
 

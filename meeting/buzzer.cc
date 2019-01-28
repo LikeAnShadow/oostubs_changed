@@ -12,7 +12,7 @@
 /* INCLUDES */
 #include "meeting/buzzer.h"
 
-extern Guarded_Organizer organizer;
+extern Guarded_Organizer guarded_organizer;
 extern Bellringer bellringer;
 
 Buzzer::Buzzer(){}
@@ -24,7 +24,7 @@ Buzzer::~Buzzer(){
     while(thread)
     {
         thread -> waiting_in(0);
-        organizer.ready(*thread);
+        guarded_organizer.ready(*thread);
         thread = (Thread*)dequeue();
     }
 }
@@ -36,7 +36,7 @@ void Buzzer::ring(){
     while(thread)
     {
         thread -> waiting_in(0);
-        organizer.ready(*thread);
+        guarded_organizer.ready(*thread);
         thread = (Thread*)dequeue();
     }
 }
@@ -48,6 +48,6 @@ void Buzzer::set (int ms)
 
 void Buzzer::sleep ()
 {
-    Thread *thread = (Thread*)organizer.active();
-    organizer.block(*thread, *this);
+    Thread *thread = (Thread*)guarded_organizer.active();
+    guarded_organizer.block(*thread, *this);
 }

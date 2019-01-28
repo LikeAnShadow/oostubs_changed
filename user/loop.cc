@@ -14,8 +14,8 @@
 #include "user/loop.h"
 
 void Loop::action(){
-    int wait;
     int count = 0;
+    Guarded_Buzzer buzzer;
 
     //Endlosschleife
     while(1) {
@@ -23,8 +23,8 @@ void Loop::action(){
         kout << "Loop: Doing stuff("<< count++ << ")";
         kout.flush();
 
-        wait = 100000000;
-        while (wait > 0) wait--;
+        buzzer.set(10000);
+        buzzer.sleep();
     }
 
 }

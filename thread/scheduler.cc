@@ -30,9 +30,13 @@ void Scheduler::schedule(){
 }
 
 void Scheduler::exit(){
-    Entrant *next = (Entrant*)list.dequeue();
+    /*Entrant *next = (Entrant*)list.dequeue();
 
     if(!next) while(1);
+    dispatch(*next);*/
+    Entrant *next;
+
+    while(!(next = (Entrant*)list.dequeue()));
     dispatch(*next);
 }
 

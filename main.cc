@@ -6,24 +6,32 @@
 
 
 #include "user/appl.h"
-#include "machine/plugbox.h"
-#include "device/cgastr.h"
-#include "guard/guard.h"
-#include "machine/pic.h"
-#include "syscall/guarded_scheduler.h"
 #include "user/loop.h"
+
+#include "machine/plugbox.h"
+#include "machine/pic.h"
+
+#include "device/cgastr.h"
 #include "device/keyboard.h"
 #include "device/watch.h"
 
+#include "guard/guard.h"
+
+#include "syscall/guarded_organizer.h"
+#include "syscall/guarded_buzzer.h"
+
+#include "meeting/bellringer.h"
+
 #define STACK_SIZE 1024
 
-
-CGA_Stream kout;            // Ausgabeobjekt
-Plugbox plugbox;            // Plugbox :D
-Guard guard;                // Guess what
-Guarded_Scheduler scheduler;        // Scheduler
-PIC pic;                    // programmable interrupt controler
+Keyboard keyboard;
+CGA_Stream kout;
+Plugbox plugbox;
+Guard guard;
+PIC pic;
 CPU cpu;
+Guarded_Organizer guarded_organizer;
+Bellringer bellringer;
 
 unsigned char stack1[STACK_SIZE];
 unsigned char stack2[STACK_SIZE];
@@ -38,23 +46,22 @@ int main()
         }
     }
 
-    Watch watch(5000);
+    Watch watch(1000); // 1 ms
 
     Application appl(stack1+STACK_SIZE);
     Loop loop1(stack2+STACK_SIZE);
 
-    appl.killLoop1(&loop1);
-
     guard.enter();
 
-    scheduler.Scheduler::ready(appl);
-    scheduler.Scheduler::ready(loop1);
+    guarded_organizer.ready(appl);
+    guarded_organizer.ready(loop1);
 
     watch.windup();
+    keyboard.plugin();
 
     cpu.enable_int();
 
-    scheduler.schedule();
+    guarded_organizer.schedule();
 
     // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
     while(1);
