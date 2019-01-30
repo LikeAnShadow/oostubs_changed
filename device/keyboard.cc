@@ -67,7 +67,7 @@ void Keyboard::epilog(){
         kout.flush();
     } else{
         // Semaphore erhöhen
-        this -> semaphore.v();
+        this -> semaphore.Semaphore::v();
         // buffer zurücksetzen; genau wie vorher
         this -> key.ascii(0);
     }

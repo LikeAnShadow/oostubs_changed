@@ -12,19 +12,20 @@
 #include "machine/pic.h"
 
 #include "device/cgastr.h"
-#include "device/keyboard.h"
 #include "device/watch.h"
 
 #include "guard/guard.h"
 
 #include "syscall/guarded_organizer.h"
 #include "syscall/guarded_buzzer.h"
+#include "syscall/guarded_keyboard.h"
+#include "syscall/guarded_semaphore.h"
 
 #include "meeting/bellringer.h"
 
 #define STACK_SIZE 1024
 
-Keyboard keyboard;
+Guarded_Keyboard keyboard;
 CGA_Stream kout;
 Plugbox plugbox;
 Guard guard;
@@ -32,6 +33,7 @@ PIC pic;
 CPU cpu;
 Guarded_Organizer guarded_organizer;
 Bellringer bellringer;
+Guarded_Semaphore waiter(0);
 
 unsigned char stack1[STACK_SIZE];
 unsigned char stack2[STACK_SIZE];
@@ -53,8 +55,8 @@ int main()
 
     guard.enter();
 
-    guarded_organizer.Scheduler::ready(appl);
-    guarded_organizer.Scheduler::ready(loop1);
+    guarded_organizer.Organizer::ready(appl);
+    guarded_organizer.Organizer::ready(loop1);
 
     keyboard.plugin();
     watch.windup();
@@ -63,7 +65,7 @@ int main()
     cpu.enable_int();
 
 
-    guarded_organizer.Scheduler::schedule();
+    guarded_organizer.schedule();
 
     // Ein Betriebssystem sollte eben nicht plötzlich enden (^.^)
     while(1);

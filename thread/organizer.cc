@@ -13,7 +13,6 @@
 
 void Organizer::block(Customer& customer, Waitingroom& waitingroom){
     // schiebe customer in waitingroom
-    customer.waiting_in(&waitingroom);
     waitingroom.enqueue(&customer);
 
     // soll aktiver Prozess blockiert werden

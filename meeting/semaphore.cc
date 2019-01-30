@@ -28,6 +28,7 @@ void Semaphore::p(){
     // Wenn count unter 0 fällt, wird aktueller Thread in den Warteraum gesetzt
     if(--count < 0){
         act = (Customer*)(guarded_organizer.active());
+        this -> enqueue(act);
         guarded_organizer.block(*act, *this);
     }
 }
@@ -43,9 +44,9 @@ void Semaphore::v(){
         // Sicherheitsabfrage
         // Panik angebracht, oder lieber stiller Abbruch?
         if(!next){
-            panic.prolog("Der Warteraum ist leer!");
+            //panic.prolog("Der Warteraum ist leer!");
         }else{
-            guarded_organizer.wakeup(*next);
+            guarded_organizer.Organizer::wakeup(*next);
         }
     }
 }

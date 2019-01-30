@@ -12,6 +12,9 @@
 /*****************************************************************************/
 
 #include "user/loop.h"
+#include "syscall/guarded_semaphore.h"
+
+extern Guarded_Semaphore waiter;
 
 void Loop::action(){
     int wait = 10000;
@@ -20,14 +23,16 @@ void Loop::action(){
 
     //Endlosschleife
     while(1) {
+        waiter.p();
         kout.setpos(0,2);
         kout << "Loop: Doing stuff("<< count++ << ")";
         kout.flush();
+        waiter.v();
 
         while (wait-- > 0);
         wait = 10000;
-        /*buzzer.set(10000);
-        buzzer.sleep();*/
+        //buzzer.set(2000);
+        //buzzer.sleep();
     }
 
 }
