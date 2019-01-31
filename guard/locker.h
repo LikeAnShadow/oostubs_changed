@@ -40,6 +40,10 @@ public:
         available = false;
     }
 
+    bool avail(){
+        return available;
+    }
+
 protected:
     void retne(){
         if(available){
@@ -50,9 +54,7 @@ protected:
         available = true;
     }
 
-    bool avail(){
-       return available;
-    }
+
 };
 
 #endif

@@ -21,7 +21,7 @@
 
 #include "device/cgastr.h"
 
-#include "meeting/semaphore.h"
+#include "syscall/guarded_semaphore.h"
 
 #define BUF_LEN 64
  
@@ -30,16 +30,12 @@ class Keyboard : public Gate, public Keyboard_Controller
 private:
     Keyboard (const Keyboard &copy); // Verhindere Kopieren
 
-    bool add(Key zeichen);
+    int x = 0; // to save
+    int y = 3; // cursorpos
 
-    Key remove();
-    char zeichen;
-    Semaphore semaphore;
+    Key buffer;
 
-
-    Key key;
-    Key buffer[BUF_LEN];
-    unsigned int limit, head, tail;
+    Guarded_Semaphore semaphore;
 
 public:
 

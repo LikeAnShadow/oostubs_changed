@@ -7,6 +7,8 @@
 
 #include "user/appl.h"
 #include "user/loop.h"
+#include "user/idle.h"
+#include "user/writer.h"
 
 #include "machine/plugbox.h"
 #include "machine/pic.h"
@@ -33,10 +35,15 @@ PIC pic;
 CPU cpu;
 Guarded_Organizer guarded_organizer;
 Bellringer bellringer;
-Guarded_Semaphore waiter(0);
+Guarded_Semaphore waiter(1);
 
 unsigned char stack1[STACK_SIZE];
 unsigned char stack2[STACK_SIZE];
+unsigned char stack3[STACK_SIZE];
+unsigned char stack4[STACK_SIZE];
+
+Idle idle(stack3+STACK_SIZE);
+
 
 int main()
 {
@@ -47,16 +54,21 @@ int main()
             kout.print(" ", 1);
         }
     }
+    kout.setpos(0,0);
+    kout << "Press any key to start!";
+    kout.flush();
 
     Watch watch(1000); // 1 ms
 
     Application appl(stack1+STACK_SIZE);
     Loop loop1(stack2+STACK_SIZE);
+    Writer writer(stack4+STACK_SIZE);
 
     guard.enter();
 
     guarded_organizer.Organizer::ready(appl);
     guarded_organizer.Organizer::ready(loop1);
+    guarded_organizer.Organizer::ready(writer);
 
     keyboard.plugin();
     watch.windup();

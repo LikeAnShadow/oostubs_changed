@@ -9,9 +9,13 @@
 /*****************************************************************************/
 
 #include "thread/scheduler.h"
-#include "device/cgastr.h"
+#include "guard/guard.h"
+#include "user/externs.h"
 
-extern CGA_Stream kout;
+
+extern Guard guard;
+extern CPU cpu;
+
 
 Scheduler::Scheduler(const Scheduler &copy){}
 
@@ -30,14 +34,14 @@ void Scheduler::schedule(){
 }
 
 void Scheduler::exit(){
-    /*Entrant *next = (Entrant*)list.dequeue();
+    Entrant *next = (Entrant *)(this -> list.dequeue());
 
-    if(!next) while(1);
-    dispatch(*next);*/
-    Entrant *next;
-
-    while(!(next = (Entrant*)list.dequeue()));
-    dispatch(*next);
+    if(next){
+        this -> dispatch(*next);
+    }
+    else{
+        dispatch(idle);
+    }
 }
 
 void Scheduler::kill(Entrant &that){
@@ -46,18 +50,14 @@ void Scheduler::kill(Entrant &that){
 }
 
 void Scheduler::resume(){
-    Entrant *ptr;
+    if((Idle *)(this -> active()) != &idle){
+        this -> list.enqueue((Entrant *)(this -> active()));
+    }
+    Entrant *next = (Entrant *)(this -> list.dequeue());
 
-    // Zeiger auf aktuellen Thread setzen
-    ptr = (Entrant*)active();
-    if(!ptr) return;
-
-    // aktuellen Prozess in die Liste eintragen
-    list.enqueue(ptr);
-
-    // nächsten Prozess holen
-    ptr = (Entrant*)list.dequeue();
-    if(!ptr) return;
-    // aktiviere Prozess
-    dispatch(*ptr);
+    if(next){
+       this -> dispatch(*next);
+    } else{
+        this -> dispatch(idle);
+    }
 }

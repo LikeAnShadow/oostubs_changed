@@ -19,6 +19,7 @@
 #include "thread/entrant.h"
 #include "thread/coroutine.h"
 #include "object/queue.h"
+#include "machine/cpu.h"
 
 class Scheduler : public Dispatcher{
 private:

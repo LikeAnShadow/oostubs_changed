@@ -13,26 +13,18 @@
 extern Plugbox plugbox;
 extern CGA_Stream kout;
 extern PIC pic;
-extern Guard guard;
 
-Keyboard::Keyboard() : Gate(), Keyboard_Controller(), zeichen(0), semaphore
-(0) {}
+Keyboard::Keyboard() : semaphore(0) {}
+
+static Keyboard_Controller kb;
 
 void Keyboard::plugin(){
    plugbox.assign(plugbox.keyboard, *this); // melde keyboard an
    pic.allow(PIC::devices::keyboard); // erlaube unterbrechungen von keyboard
-
-   //initialisiere integer
-   this -> limit = 0;
-   this -> head = 0;
-   this -> tail = 0;
-   this -> key.ascii(0);
-
-   return;
 }
 
 bool Keyboard::prolog(char* msg){
-   char zeichen;
+   /*char zeichen;
    Key input;
 
    input = this -> key_hit();
@@ -55,57 +47,47 @@ bool Keyboard::prolog(char* msg){
          }
       }
    }
-   return false;
+   return false;*/
+   Key key = kb.key_hit();
+   if(key.valid()){
+       this -> buffer = key;
+       unsigned char c = key.ascii();
+
+       if(c == 32 && key.ctrl() && key.alt()){
+           kb.reboot(); //strg-alt-entf zum reboot
+       }
+       if (key.scancode() == 83 && key.ctrl() && key.alt()) {
+           kb.reboot(); //strg-alt-entf zum reboot
+       }
+       return true;
+   } else{
+       return false;
+   }
 }
 
 void Keyboard::epilog(){
-    // Wenn Tastaturbuffer voll,
+    /*// Wenn Tastaturbuffer voll,
     if(this -> add(this -> key)){
-        // dann nicht noch weiter füllen und error ausgeben, sonst
-        kout.setpos(0,5);
-        kout << "Aufgabe 6 gerade in Arbeit, sorry";
+        kout.setpos(x,y);
+        kout << this -> key.ascii();
         kout.flush();
+        kout.getpos(x,y);
     } else{
         // Semaphore erhöhen
-        this -> semaphore.Semaphore::v();
+        this -> semaphore.Semaphore::signal();
         // buffer zurücksetzen; genau wie vorher
         this -> key.ascii(0);
+    }*/
+    Key key = this -> buffer;
+    if(key.ascii() != 0){
+        semaphore.Semaphore::v();
     }
+
 }
 
 Key Keyboard::getKey(){
     // blockieren, bis key gedrück wurde und zurückgegeben werden kann
     this -> semaphore.p();
     // key ausgeben und aus dem buffer löschen
-    return this -> remove();
-}
-
-bool Keyboard::add(Key zeichen){
-    // wenn aktueller buffer kleiner als maximum,
-    if(this -> limit < BUF_LEN){
-        // dann neuen key anfügen
-        this -> buffer[this -> tail] = zeichen;
-        // tail um eins erhöhen.
-        // falls tail > BUF_LEN durch modulo von vorne anfangen
-        this -> tail = (tail++) % BUF_LEN;
-        // aktuellen buffer um 1 erhöhen
-        this -> limit++;
-        // return true, wenn zeichen angehängt werden konnte
-        return true;
-    }
-    // return false, wenn nicht
-    return false;
-}
-
-Key Keyboard::remove(){
-    // Hilfsvariable
-    Key help;
-    // hole erstes Element aus dem Buffer
-    help = this -> buffer[head];
-    // erniedrige aktuellen buffer um eins, da gleich ein Element gelöscht wird
-    this -> limit--;
-    // gleiches Procedere, wie in add()
-    this -> head = (this -> head++) % BUF_LEN;
-    // gib alten head zurück
-    return help;
+    return this -> buffer;
 }

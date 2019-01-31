@@ -17,20 +17,22 @@
 extern Guarded_Semaphore waiter;
 
 void Loop::action(){
-    int wait = 10000;
+    int wait = 2000;
     int count = 0;
     Guarded_Buzzer buzzer;
 
     //Endlosschleife
     while(1) {
-        waiter.p();
+        buzzer.set(wait);
+        buzzer.sleep();
+        waiter.wait();
         kout.setpos(0,2);
         kout << "Loop: Doing stuff("<< count++ << ")";
         kout.flush();
-        waiter.v();
+        waiter.signal();
 
-        while (wait-- > 0);
-        wait = 10000;
+        //while (wait-- > 0);
+        //wait = 10000;
         //buzzer.set(2000);
         //buzzer.sleep();
     }
