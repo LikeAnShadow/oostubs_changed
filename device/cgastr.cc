@@ -15,9 +15,8 @@
 
 CGA_Stream::CGA_Stream() : O_Stream(), CGA_Screen() {}
 
-
 void CGA_Stream::flush(){
-    this->print(this->buf, (int) this->counter);
+    this->print(this->buf, (int) this->counter, GREENONBLACK);
     this->counter = 0;
     return;
 }

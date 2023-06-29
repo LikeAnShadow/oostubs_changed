@@ -39,6 +39,7 @@ Stringbuffer::Stringbuffer(const Stringbuffer &copy){
 
 // Haengt c an das Ende des Buffers
 void Stringbuffer::put (char c){
+    if(c == 13) return;
     if(counter == BUF_SIZE) flush();
     buf[counter++] = c;
 }

@@ -22,7 +22,7 @@ extern  CGA_Stream kout;
 class Loop : public Thread {
 
 public:
-    Loop(void* tos) : Thread(tos){}
+    Loop() : Thread(){}
 
     void action();
 };

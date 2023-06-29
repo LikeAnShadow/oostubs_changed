@@ -34,7 +34,7 @@ private:
 
 public:
 /* Hier muesst ihr selbst Code vervollstaendigen */
-    Application(void *tos) : Thread(tos){
+    Application() : Thread(){
     }
 
     void killLoop1(Thread *loop){

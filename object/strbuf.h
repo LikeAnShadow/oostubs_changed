@@ -22,7 +22,7 @@
 
 class Stringbuffer
 {
-
+    
 public:
     Stringbuffer();
     Stringbuffer(const Stringbuffer &copy); // Verhindere Kopieren

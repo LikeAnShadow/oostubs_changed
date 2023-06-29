@@ -49,7 +49,7 @@ OBJDIR = ./build
 DEPDIR = ./dep
 # ACHTUNG: ein falsch angegebenes Laufwerk kann dazu fuehren, dass Daten auf dem
 # spezifizierten Laufwerk verloren gehen! Nicht mit root-Rechten ausfuehren!
-DRIVE_HD = /dev/sdz
+DRIVE_HD = /dev/sde
 DELETE = rm
 ASM = nasm
 QEMU ?= qemu-system-x86_64

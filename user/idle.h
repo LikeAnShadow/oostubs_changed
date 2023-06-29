@@ -17,7 +17,7 @@ private:
     Idle(const Idle &copy); // Verhindere Kopieren
 
 public:
-    Idle(void *tos) : Thread(tos){
+    Idle() : Thread(){
 
     }
 

@@ -12,6 +12,7 @@
 
 #include "user/appl.h"
 #include "syscall/guarded_semaphore.h"
+#include "device/keyboard.h"
 
 extern Guarded_Semaphore waiter;
 
@@ -20,7 +21,8 @@ void Application::action () {
     int wait = 1000;
     int count = 0;
     Guarded_Buzzer buzzer;
-
+    Keyboard keyboard;
+    keyboard.plugin();
     while (1){
         buzzer.set(wait);
         buzzer.sleep();

@@ -16,12 +16,18 @@
 class Thread : public Customer {
 private:
     Thread (const Thread &copy); // Verhindere Kopieren
+
+    unsigned char* returnAddress() {
+        unsigned char stack[4096];
+        unsigned char* p = stack;
+        return p;
+    }
 public:
     /*
      * Der Konstruktor leitet den Parameter tos an den Konstruktor der
      * Basisklasse Customer weiter.
      */
-    Thread(void* tos) : Customer(tos){}
+    Thread(char h = 'a') : Customer(returnAddress()){}
  };
 
 #endif
