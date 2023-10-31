@@ -60,6 +60,8 @@ public:
      O_Stream&operator<< (int number);
      O_Stream&operator<< (unsigned long number);
      O_Stream&operator<< (long number);
+     O_Stream&operator<< (long long number);
+     O_Stream&operator<< (unsigned long long number);
 
 
      // Anfügen von pointern

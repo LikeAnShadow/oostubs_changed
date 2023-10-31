@@ -16,6 +16,7 @@
 #include "device/cgastr.h"
 #include "device/watch.h"
 #include "device/panic.h"
+#include "device/devices.h"
 
 #include "guard/guard.h"
 
@@ -38,11 +39,14 @@ Guarded_Semaphore waiter(1);
 
 #define STACK_SIZE 4096
 
-unsigned char stack1[STACK_SIZE];
+/*unsigned char stack1[STACK_SIZE];
 unsigned char stack2[STACK_SIZE];
 unsigned char stack3[STACK_SIZE];
 unsigned char stack4[STACK_SIZE];
+*/
 unsigned char idleStack[STACK_SIZE];
+#include "nw_stack.h"
+extern uint32_t endkernel;
 
 Idle idle;
 
@@ -58,9 +62,11 @@ int main()
     kout.setpos(0,0);
     kout << " ------------------------------------------------------------------------------ ";
     kout << "|                                                                              |";
-    kout << "|        OOStuBs 1.0 - Copyright https://github.com/Pluettmann/oostubs         |";
+    kout << "|        OOStuBs 1.1 - Copyright https://github.com/Pluettmann/oostubs         |";
+    kout << "|                 Forked from https://github.com/likeanshadow                  |";
     kout << "|                                                                              |";
     kout << " ------------------------------------------------------------------------------ ";
+    kout << &Packet << endl;
     kout.flush();
     Watch watch(1000); // 1 ms
 

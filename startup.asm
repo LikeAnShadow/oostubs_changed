@@ -71,7 +71,6 @@ pagetable_end:  equ 0x200000
 [EXTERN __fini_array_end]
 
 [SECTION .text]
-
 ;
 ;   System-Start, Teil 1 (im 32-bit Protected Mode)
 ;
@@ -501,7 +500,9 @@ MULTIBOOT_BOOTDEVICE:       resd 1
 MULTIBOOT_CMDLINE:          resd 1
 MULTIBOOT_MODULES_COUNT:    resd 1
 MULTIBOOT_MODULES_ADDRESS:  resd 1
-
+[GLOBAL endkernel]
+endkernel:
+	dd 0xDEAD
 global init_stack:data (init_stack.end - init_stack)
 init_stack:
 	resb STACKSIZE
@@ -523,3 +524,4 @@ pdp:
 
 pd:
 	resb   MAX_MEM*4096
+

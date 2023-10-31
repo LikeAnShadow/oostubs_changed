@@ -1,0 +1,33 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build OOstubs",
+            "type": "shell",
+            "command": "ssh 192.168.3.3 './buildfromSSH.sh'"
+        },
+        {
+            "label": "Start VM1 over SSH",
+            "type": "shell",
+            "command": "ssh 192.168.3.3 virsh -c qemu:///system start vm1",
+            "problemMatcher": []
+        },
+        {
+            "label": "Start SPICE-GUI",
+            "command": "cmd /c C:\\Users\\Tobias\\startSPICE.bat",
+            "type": "shell",
+        },
+        {
+            "label": "Stop VM1 over SSH",
+            "type": "shell",
+            "command": "ssh 192.168.3.3 virsh -c qemu:///system destroy vm1",
+        },
+        {
+            "label": "Build and Run OOstubs",
+            "dependsOn":["Build OOstubs", "Start VM1 over SSH", "Start SPICE-GUI", "Stop VM1 over SSH"],
+            "dependsOrder": "sequence"
+        },
+    ]
+}

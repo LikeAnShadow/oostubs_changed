@@ -70,6 +70,15 @@ O_Stream& O_Stream::operator<< (long number){
     return *this;
 }
 
+O_Stream& O_Stream::operator<< (long long number){
+    cast(number);
+    return *this;
+}
+O_Stream& O_Stream::operator<< (unsigned long long number){
+    cast(number, true);
+    return *this;
+}
+
 O_Stream& O_Stream::operator<< (void* pointer){
     // Pointer in Hexadezimaldarstellung
     castHex((char*)&pointer, sizeof(void*));
@@ -129,9 +138,9 @@ void O_Stream::castHex(char* ptr, char size){
 }
 
 void O_Stream::cast(long long value, bool isUnsigned){
-    char array[32];
+    char array[64];
     char *ptr = &array[0];
-    char *lst = &array[32];
+    char *lst = &array[64];
 
     if(!isUnsigned && value < 0){
         put('-');

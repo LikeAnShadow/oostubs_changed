@@ -8,8 +8,15 @@
 #include "strcmp.h"
 #include "shellcommands.h"
 #include "apps.h"
+#include "machine/pci.h"
+#include "object/stdlib.h"
+#include "machine/checkForDevices.h"
+#include "device/devices.h"
+#include "object/nw_protocols.h"
+//#include <liballoc.h>
 
 void Shell::action() {
+    argc = 0;
     waiter.wait();
     kout.getpos(x,y);
     waiter.signal();
@@ -30,7 +37,7 @@ void Shell::action() {
             case BACKSPACE:
                 if(bufferpos != 0){
                     kout.setpos(--x,y);
-                    kout << " ";
+                    kout << ' ';
                     kout.flush();
                     kout.setpos(x,y);
                     --bufferpos;
@@ -68,6 +75,7 @@ void Shell::action() {
 
 void Shell::commandParser(char* buffer){
     printShell = true;
+    checkForSpaces(buffer, &argc, argv);
     kout.setpos(0,++y);
     kout.getpos(x,y);
     if (bufferpos == 0) {}
@@ -87,8 +95,71 @@ void Shell::commandParser(char* buffer){
         kout.flush();
         keyboard.shutdown();
     } 
-    else if(MULTAPP) {    
-        
+    else if(TR) {
+        int erg;
+        if(argc == 4) {
+            switch(argv[2][0]) {
+                case '+':
+                    erg = atoi(argv[1]) + atoi(argv[3]);
+                    kout << "Ergebnis: " << erg << endl;
+                    break;
+                case '-':
+                    erg = atoi(argv[1]) - atoi(argv[3]);
+                    kout << "Ergebnis: " << erg << endl;
+                    break;
+                case '*':
+                    erg = atoi(argv[1]) * atoi(argv[3]);
+                    kout << "Ergebnis: " << erg << endl;
+                    break;
+                case '/':
+                    erg = atoi(argv[1]) / atoi(argv[3]);
+                    kout << "Ergebnis: " << erg << endl;
+                    break;
+                default:
+                    kout << "Ungueltig!" << endl;
+                    break;
+            }
+            kout.flush();
+        }
+    }
+    else if (CHECK) {
+        uint32_t fullDeviceID;
+        if(argc != 5) {
+            kout << "Ausfuehren mit: check <Bus> <Slot> <Funktion> <Offset>" << endl;
+            kout.flush();
+        } else {
+        kout << "Vendor: " << hex << pciCheckVendor(atoi(argv[1]),atoi(argv[2]),atoi(argv[3])) << ", Device: " << pciCheckDevice(atoi(argv[1]), atoi(argv[2]), atoi(argv[3])) << dec << endl;
+        kout << "Headertype: " << pciGetHeaderType(atoi(argv[1]), atoi(argv[2]), atoi(argv[3])) << endl;
+        kout << "Offset-Ergebnis (16bit): " << hex << pciConfigReadWord(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4])) << " | " << dec << pciConfigReadWord(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4])) << endl;
+        kout << "Offset-Ergebnis (32bit): " << hex << pciConfigReadLong(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4])) << " | " << dec << pciConfigReadLong(atoi(argv[1]), atoi(argv[2]), atoi(argv[3]), atoi(argv[4])) << endl;
+        if((fullDeviceID = checkFullDevice(atoi(argv[1]), atoi(argv[2])) == 0x10EC8139)){
+            kout << "Name of Geraetes: RTL8139" << endl;
+            kout << "Verbunden: " << getDevice()->getConnected()<< endl;
+        } else {
+            kout << "Name of Geraetes: N/A" << endl;
+        }
+        kout.flush();
+        }
+    }
+    else if(CHECKIOA) {
+        if(argc != 2) {} 
+        else{
+            kout << hex << inl(atoi(argv[1])) << dec << endl;
+        }
+        kout.flush();
+    } else if(WRITEIOA) {
+        if(argc != 3) {} 
+        else{
+            outl(atoi(argv[1]), atoui(argv[2]));
+        }
+        kout.flush();
+    }
+     else if(DHCP_BROADCAST) {
+        //HCP_Packet *packet = new DHCP_Packet(0x0,0xFFFFFFFF, 1, 1, 6, 1, 0,0,0,0,0,0);
+        //kout << bp.getTotalLength()/8 <<endl;
+        //kout.flush();
+        //getDevice()->sendPacket((uint8_t*)(&bp), bp.getTotalLength()/8);
+
     }
     else {
         kout << "Diese Eingabe ist ungueltig!" << endl;
@@ -98,4 +169,28 @@ void Shell::commandParser(char* buffer){
         buffer[i] = 0;
     }
     bufferpos = 0;
+}
+
+
+void checkForSpaces(char* buffer, unsigned int* argc, char (* argv)[16]){
+    int arr1 = 0;
+    int arr2 = 0;
+    *argc = 1;
+    for(int i = 0; i < 8; i++) {
+        for(int j = 0; j < 16;j++) {
+            argv[i][j] = '\0';
+        }
+    }
+    for(char *buf = buffer; *buf != '\0'; buf++) {
+        
+        if(*buf == ' ') {
+            argv[arr1][arr2] = '\0';
+            arr1++;
+            *argc = *argc + 1;
+            arr2 = 0;
+        } else {
+        argv[arr1][arr2] = *buf;
+        arr2++;
+        }
+    }
 }

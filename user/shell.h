@@ -23,15 +23,20 @@ private:
     Shell(const Shell &copy);
     void commandParser(char* buffer);
     char buffer[BUFFERSIZE];
+    unsigned int argc;
+    char argv[8][16];
     int bufferpos = 0;
     int x;int y;
     bool printShell = true;
+    //DHCP_Packet bp = DHCP_Packet(0x0,0xFFFFFFFF, 1, 1, 6, 1, 0,0,0,0,0,0);
 
 public:
     Shell() : Thread(){}
 
     void action();
 };
+
+void checkForSpaces(char* buffer, unsigned int* argc, char (* argv)[16]);
 
 
 #endif //OOSTUBS_WRITER_H

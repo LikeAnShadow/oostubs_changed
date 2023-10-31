@@ -15,9 +15,10 @@
 
 [GLOBAL outb]
 [GLOBAL outw]
+[GLOBAL outl]
 [GLOBAL inb]
 [GLOBAL inw]
-
+[GLOBAL inl]
 ; IMPLEMENTIERUNG DER FUNKTIONEN
 
 [SECTION .text]
@@ -48,6 +49,20 @@ outw:
 	pop    rbp
 	ret
 
+; OUTL: Longweise Ausgabe eines Wertes ueber einen I/O-Port.
+;
+;       C-Prototyp: void outl (int port, int value);
+
+outl:
+	push   rbp
+	mov    rbp, rsp
+	mov    rdx, rdi
+	mov    rax, rsi
+	out    dx, eax
+	pop    rbp
+	ret
+
+
 ; INB: Byteweises Einlesen eines Wertes ueber einen I/O-Port.
 ;
 ;      C-Prototyp: int inb (int port);
@@ -71,5 +86,18 @@ inw:
 	mov    rdx, rdi
 	mov    rax, rsi
 	in     ax, dx
+	pop    rbp
+	ret
+
+; INL: Longweises Einlesen eines Wertes ueber einen I/O-Port.
+;
+;      C-Prototyp: int inl (int port);
+
+inl:
+	push   rbp
+	mov    rbp, rsp
+	mov    rdx, rdi
+	mov    rax, rsi
+	in     eax, dx
 	pop    rbp
 	ret

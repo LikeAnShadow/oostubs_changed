@@ -2,7 +2,7 @@
 
 #ifndef __io_port_include__
 #define __io_port_include__
-
+#include "object/uint_templates.h"
 /*****************************************************************************/
 /* Betriebssysteme                                                           */
 /*---------------------------------------------------------------------------*/
@@ -20,10 +20,12 @@
 
 /* BENUTZTE FUNKTIONEN */
 
-extern "C" void outb  (int port, int value);
-extern "C" void outw (int port, int value);
-extern "C" int inb   (int port);
-extern "C" int inw  (int port);
+extern "C" void outb  (uint16_t port, uint8_t value);
+extern "C" void outw (uint16_t port, uint16_t value);
+extern "C" void outl (uint16_t port, uint32_t value);
+extern "C" uint8_t inb   (uint16_t port);
+extern "C" uint16_t inw  (uint16_t port);
+extern "C" uint32_t inl (uint16_t port);
 
 /* KLASSENDEFINITION */
 
@@ -32,32 +34,42 @@ class IO_Port
       // Kopieren erlaubt!
 
       // Adresse im I/O-Adressraum
-      int address;
+      uint16_t address;
    public:
-      IO_Port (int a) : address (a) {};
+      IO_Port (uint16_t a) : address (a) {};
 
       // OUTB: Byteweise Ausgabe eines Wertes ueber einen I/O-Port.
-      void outb (int val) const
+      void outb (uint8_t val) const
        { 
-	 ::outb (address, val); 
+	      ::outb (address, val); 
        };
 
       // OUTW: Wortweise Ausgabe eines Wertes ueber einen I/O-Port.
-      void outw (int val) const
+      void outw (uint16_t val) const
        { 
-	 ::outw (address, val); 
+	      ::outw (address, val); 
        };
 
-      // INB: Byteweises Einlesen eines Wertes ueber einen I/O-Port.
-      int inb () const
+      // OUTL: Longweise Ausgabe eines Wertes ueber einen I/O-Port.
+      void outl (uint32_t val) const
        { 
-	 return ::inb (address); 
+	      ::outl (address, val); 
+       };
+      // INB: Byteweises Einlesen eines Wertes ueber einen I/O-Port.
+      uint8_t inb () const
+       { 
+	      return ::inb (address); 
        };
 
       // INW: Wortweises Einlesen eines Wertes ueber einen I/O-Port.
-      int inw () const
+      uint16_t inw () const
        { 
-	 return ::inw (address); 
+	       return ::inw (address); 
+       };
+             // INL: Longweises Einlesen eines Wertes ueber einen I/O-Port.
+      uint32_t inl () const
+       { 
+	       return ::inl (address); 
        };
  };
 

@@ -49,7 +49,7 @@ OBJDIR = ./build
 DEPDIR = ./dep
 # ACHTUNG: ein falsch angegebenes Laufwerk kann dazu fuehren, dass Daten auf dem
 # spezifizierten Laufwerk verloren gehen! Nicht mit root-Rechten ausfuehren!
-DRIVE_HD = /dev/sde
+DRIVE_HD = /dev/sdb
 DELETE = rm
 ASM = nasm
 QEMU ?= qemu-system-x86_64
@@ -163,10 +163,11 @@ vorgabe%:
 # ACHTUNG: ein falsch angegebenes Laufwerk kann dazu fuehren, dass Daten auf dem
 # spezifizierten Laufwerk verloren gehen! Nicht mit root-Rechten ausfuehren!
 
-bootdisk: $(OBJDIR)/bootdisk.iso
-	@echo "CP		$<"
-	$(VERBOSE) cp $< $(DRIVE_HD)
-
+#bootdisk: $(OBJDIR)/bootdisk.iso
+#	@echo "CP		$<"
+#	$(VERBOSE) cp $< $(DRIVE_HD)
+bootdisk: #$(OBJDIR)/bootdisk.iso
+	cp $(OBJDIR)/bootdisk.iso /home/smbshare/isos/oostubs.iso
 # --------------------------------------------------------------------------
 # 'qemu' ruft den qemu-Emulator mit dem System auf.
 
