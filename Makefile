@@ -172,7 +172,7 @@ bootdisk: #$(OBJDIR)/bootdisk.iso
 # 'qemu' ruft den qemu-Emulator mit dem System auf.
 
 qemu: $(OBJDIR)/bootdisk.iso
-	$(QEMU) -drive file=build/bootdisk.iso,format=raw -k en-us
+	$(QEMU) -drive file=build/bootdisk.iso,format=raw -k en-us -netdev user,id=mynet0,net=192.168.76.0/24,dhcpstart=192.168.76.9  -device rtl8139,netdev=mynet0
 
 # --------------------------------------------------------------------------
 # 'qemu-smp' ruft den qemu-Emulator mit SMP-Support und 2 CPUs mit dem System auf.
